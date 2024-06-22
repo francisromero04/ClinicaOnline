@@ -1,0 +1,132 @@
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5">
+            <form (ngSubmit)="onSubmit()" [formGroup]="formulario" class="needs-validation">
+              <h2 class="fw-bold mb-4 text-uppercase text-center">REGISTRAR PACIENTE</h2>
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline form-white">
+                    <input formControlName="pacienteNombre" type="text" class="form-control form-control-lg" id="pacienteNombre" />
+                    <label class="form-label" for="pacienteNombre">Nombre del paciente</label>
+                    <div *ngIf="formulario.controls['pacienteNombre'].errors && formulario.controls['pacienteNombre'].touched">
+                      <span style="color: red;">Debe ingresar el nombre del paciente.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline form-white">
+                    <input formControlName="pacienteApellido" type="text" class="form-control form-control-lg" id="pacienteApellido" />
+                    <label class="form-label" for="pacienteApellido">Apellido del paciente</label>
+                    <div *ngIf="formulario.controls['pacienteApellido'].errors && formulario.controls['pacienteApellido'].touched">
+                      <span style="color: red;">Debe ingresar el apellido del paciente.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline form-white">
+                    <input formControlName="pacienteEdad" type="number" class="form-control form-control-lg" id="pacienteEdad" />
+                    <label class="form-label" for="pacienteEdad">Edad del paciente</label>
+                    <div *ngIf="formulario.controls['pacienteEdad'].errors && formulario.controls['pacienteEdad'].touched">
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteEdad'].errors['required']">Debe ingresar la edad del paciente.</span>
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteEdad'].errors['min']">La edad del paciente debe ser mayor o igual a 1.</span>
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteEdad'].errors['max']">La edad del paciente debe ser menor o igual a 110.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline form-white">
+                    <input formControlName="pacienteDni" type="number" class="form-control form-control-lg" id="pacienteDni" />
+                    <label class="form-label" for="pacienteDni">Dni del paciente</label>
+                    <div *ngIf="formulario.controls['pacienteDni'].errors && formulario.controls['pacienteDni'].touched">
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteDni'].errors['required']">Debe ingresar el dni del paciente.</span>
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteDni'].errors['min']">El dni del paciente debe ser mayor o igual a 1.</span>
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteDni'].errors['max']">El dni del paciente debe ser menor o igual a 1000.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline form-white">
+                    <input formControlName="pacienteEmail" type="email" class="form-control form-control-lg" id="pacienteEmail" />
+                    <label class="form-label" for="pacienteEmail">Correo electrónico</label>
+                    <div *ngIf="formulario.controls['pacienteEmail'].errors && formulario.controls['pacienteEmail'].touched">
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteEmail'].errors['required']">Debe ingresar un correo.</span>
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteEmail'].errors['email']">Ingrese un correo válido.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline form-white">
+                    <input formControlName="pacienteClave" type="password" class="form-control form-control-lg" id="pacienteClave" />
+                    <label class="form-label" for="pacienteClave">Contraseña</label>
+                    <div *ngIf="formulario.controls['pacienteClave'].errors && formulario.controls['pacienteClave'].touched">
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteClave'].errors['required']">Debe ingresar una contraseña.</span>
+                      <span style="color: red;" *ngIf="formulario.controls['pacienteClave'].errors['minlength']">La contraseña debe tener al menos 6 caracteres.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline form-white">
+                    <input formControlName="pacienteObraSocial" type="text" class="form-control form-control-lg" id="pacienteObraSocial" />
+                    <label class="form-label" for="pacienteObraSocial">Obra Social del paciente</label>
+                    <div *ngIf="formulario.controls['pacienteObraSocial'].errors && formulario.controls['pacienteObraSocial'].touched">
+                      <span style="color: red;">Debe ingresar la obra social del paciente.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline form-white">
+                    <input formControlName="fotoPaciente" type="file" accept=".jpg, .jpeg, .png" class="form-control form-control-lg" id="fotoPaciente" (change)="onImageSelected($event, 1)" />
+                    <label class="form-label" for="fotoPaciente">1° Foto del paciente</label>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline form-white">
+                    <input formControlName="fotoPaciente2" type="file" accept=".jpg, .jpeg, .png" class="form-control form-control-lg" id="fotoPaciente2" (change)="onImageSelected($event, 2)" />
+                    <label class="form-label" for="fotoPaciente2">2° Foto del paciente</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div *ngIf="imagenURL">
+                    <img [src]="imagenURL" alt="Imagen seleccionada" class="image mb-3" style="width: 100px; height: 100px" />
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <div *ngIf="imagenURL2">
+                    <img [src]="imagenURL2" alt="Imagen seleccionada" class="image mb-3" style="width: 100px; height: 100px" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center">
+                <button class="btn btn-outline-light btn-lg px-5" type="submit">REGISTRARSE</button>
+              </div>
+
+              <hr>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

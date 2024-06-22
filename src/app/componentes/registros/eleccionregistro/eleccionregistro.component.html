@@ -1,0 +1,28 @@
+<div class="container mt-5">
+  <div class="registro-buttons text-center">
+    <button
+      class="btn btn-gpt btn-lg rounded-pill"
+      (click)="mostrarRegistro('paciente')"
+      [class.active]="mostrarRegistroPacientes"
+    >
+      Registrar Paciente
+    </button>
+    <button
+      class="btn btn-gpt btn-lg rounded-pill"
+      (click)="mostrarRegistro('especialista')"
+      [class.active]="mostrarRegistroEspecialistas"
+    >
+      Registrar Especialista
+    </button>
+  </div>
+</div>
+
+<div class="registro-form mt-3 text-center">
+  <div *ngIf="mostrarRegistroPacientes">
+    <app-registropaciente></app-registropaciente>
+  </div>
+
+  <div *ngIf="mostrarRegistroEspecialistas">
+    <app-registroespecialista></app-registroespecialista>
+  </div>
+</div>

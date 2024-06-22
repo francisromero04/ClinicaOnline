@@ -1,0 +1,20 @@
+.btn-gpt {
+  color: #ffffff;
+  background-color: #4a4a4a;
+  border-color: #4a4a4a;
+}
+
+.btn-gpt:hover,
+.btn-gpt:focus {
+  background-color: #636363;
+  border-color: #636363;
+}
+
+.registro-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.registro-buttons .btn {
+  margin: 10px;
+}
