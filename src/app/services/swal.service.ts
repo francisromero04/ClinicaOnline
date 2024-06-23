@@ -15,7 +15,7 @@ export class SwalService {
       title: 'Sesión iniciada exitosa',
       text: '¡Bienvenido!',
       showConfirmButton: false,
-      timer: 1200,
+      timer: 1000,
     });
     this.ruta.navigate(ruta);
   }
@@ -25,7 +25,7 @@ export class SwalService {
       icon: 'error',
       title: 'Su cuenta ha sido rechazada',
       text: 'Por favor, comuníquese con administración.',
-      timer: 3000,
+      timer: 1000,
     });
   }
 
@@ -34,7 +34,7 @@ export class SwalService {
       icon: 'warning',
       title: 'Su cuenta aún no ha sido aprobada',
       text: 'Por favor, comuníquese con administración.',
-      timer: 3000,
+      timer: 1000,
     });
   }
 
@@ -43,7 +43,7 @@ export class SwalService {
       icon: 'warning',
       title: 'Verificacion de correo electrónico',
       text: 'Para poder avanzar, debe verificar el correo electrónico registrado.',
-      timer: 3000,
+      timer: 1000,
     });
   }
 
@@ -52,7 +52,7 @@ export class SwalService {
       icon: 'error',
       title: 'Ha ocurrido un error',
       text: mensajeError,
-      timer: 3000,
+      timer: 1000,
     });
   }
 }

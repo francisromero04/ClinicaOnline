@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { Paciente } from '../../clases/paciente';
+import { Especialista } from '../../clases/especialista';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-barranav',
@@ -11,30 +14,52 @@ import { CommonModule } from '@angular/common';
   styleUrl: './barranav.component.css'
 })
 export class BarranavComponent implements OnInit {
-  constructor(private authService: AuthService, private ruta: Router) {}
-  usuarioConectado = this.authService.obtenerUsuarioConectado();
-  nombreUsuario: string | null = null; // Cambia el tipo de nombreUsuario
-  mostrarCorreo: boolean = false;
-  mostrarChat: boolean = false;
+  loggedUser = this.authService.obtenerUsuarioConectado();
+  esPaciente: boolean = false;
+  usuario: Especialista | Paciente | null = null;
 
-  ngOnInit() {
-    this.usuarioConectado.subscribe(user => {
-      if (user) {
-        this.nombreUsuario = user.displayName;
-        this.mostrarCorreo = true; // Mostrar el correo cuando el usuario esté conectado
-        this.mostrarChat = true;
-      } else {
-        this.mostrarCorreo = false; // Ocultar el correo cuando el usuario no esté conectado
-        this.mostrarChat = false;
-      }
-    });
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.esPaciente = localStorage.getItem('esPaciente') === 'true';
+    this.user();
   }
 
-  logout() {
-    this.authService.cerrarSesion();
-    this.nombreUsuario = null; // Limpiar el correo cuando el usuario cierre sesión
-    this.mostrarCorreo = false; // Ocultar el correo al cerrar sesión
-    this.mostrarChat = false;
-    this.ruta.navigate(['/login']);
+  async user() {
+    let user = this.authService.obtenerUsuarioActual();
+    if (user) {
+      const especialista = await this.authService.getUserByUidAndType(
+        user.uid,'especialistas'
+      );
+      const paciente = await this.authService.getUserByUidAndType(user.uid,'pacientes');
+      if (especialista) {
+        this.esPaciente = false;
+        this.usuario = especialista;
+        localStorage.setItem('esPaciente', 'false');
+      }
+      if (paciente) {
+        this.esPaciente = true;
+        this.usuario = paciente;
+        localStorage.setItem('esPaciente', 'true');
+      }
+    }
+  }
+
+  logOut() {
+    Swal.fire({
+      title: '¿Cerrar sesión?',
+      text: '¿Estás seguro de que deseas cerrar sesión?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si el usuario confirma, cerramos la sesión
+        this.authService.cerrarSesion();
+        localStorage.removeItem('logueado');
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

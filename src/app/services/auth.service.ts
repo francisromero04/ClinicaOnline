@@ -25,32 +25,8 @@ export class AuthService {
     return this.autenticacion.authState;
   }
 
-  obtenerDatosUsuario(){
-    return this.autenticacion.currentUser;
-  }
-
-  async registrarAdmin({ email, password, nick }: any) {
-    const auth = getAuth();
-    const usuarioActual = auth.currentUser; // Guarda el usuario actual
-
-    try {
-      const credencialesUsuario = await createUserWithEmailAndPassword(
-        this.auth,
-        email,
-        password
-      );
-      const usuario = credencialesUsuario.user;
-      await updateProfile(usuario, { displayName: nick });
-
-      if (usuarioActual) {
-        // Vuelve a establecer el usuario original como el usuario actual
-        await auth.updateCurrentUser(usuarioActual);
-      }
-
-      return usuario;
-    } catch (error) {
-      throw error;
-    }
+  obtenerUsuarioActual(): User | null {
+    return this.usuario;
   }
 
   async registrar({ email, password, nick }: any) {
@@ -249,5 +225,75 @@ export class AuthService {
     }
   }
 
+  async registrarAdministrador({ email, password, nick }: any) {
+    const auth = getAuth();
+    const currentUser = auth.currentUser; // Guarda el usuario actual
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      await updateProfile(user, { displayName: nick });
+
+      if (currentUser) {
+        // Vuelve a establecer el usuario original como el usuario actual
+        await auth.updateCurrentUser(currentUser);
+      }
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async guardarAdministradorEnBD(admin: Admin) {
+    try {
+      const docRef = await addDoc(collection(this.db, 'admins'), {
+        uid: admin.uid,
+        nombre: admin.nombre,
+        apellido: admin.apellido,
+        edad: admin.edad,
+        dni: admin.dni,
+        foto1: admin.foto1,
+      });
+      console.log('Document written with ID: ', docRef.id);
+      return true;
+    } catch (e) {
+      console.error('Error adding document: ', e);
+      return false;
+    }
+  }
+
+  async actualizarVerificadoEspecialista(
+    uid: string,
+    valor: string
+  ): Promise<void> {
+    try {
+      const especialistasCollection = collection(this.db, 'especialistas');
+      const querys = query(especialistasCollection, where('uid', '==', uid));
+      const querySnapshot = await getDocs(querys);
+
+      if (querySnapshot.size === 0) {
+        console.log(
+          'No se encontró ningún especialista con el UID interno proporcionado'
+        );
+        return;
+      }
+
+      querySnapshot.forEach((docSnapshot) => {
+        const especialistaRef = doc(this.db, 'especialistas', docSnapshot.id);
+        updateDoc(especialistaRef, { verificado: valor });
+      });
+    } catch (error) {
+      console.error(
+        'Error al actualizar el campo verificado del especialista: ',
+        error
+      );
+      throw error;
+    }
+  }
 }
 

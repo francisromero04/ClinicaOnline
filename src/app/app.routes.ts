@@ -21,6 +21,10 @@ export const routes: Routes = [
      loadComponent: () => import("./componentes/registros/eleccionregistro/eleccionregistro.component")
     },
     {
+      path: 'homeAdmin',
+      loadChildren: () => import('./componentes/usuarios/usuarios.routes')
+    },
+    {
       path: "**", //¿estoy en cualquier ruta?
       redirectTo: 'error',
     }

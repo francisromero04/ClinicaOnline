@@ -11,47 +11,66 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link active" routerLink="/home">Home</a>
           </li>
-
-          <!-- USUARIO SIN CONEXION, MUESTRA BOTONES -->
-          <ng-container *ngIf="(usuarioConectado | async) === null">
+          <ng-container *ngIf="esPaciente">
             <li class="nav-item">
-              <a class="nav-link active" routerLink="/login">Login</a>
+              <a class="nav-link active" routerLink="/home/turnos">Mis turnos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" routerLink="/eleccionregistro">Registrarse</a>
+              <a class="nav-link active" routerLink="/home/turnos/solicitar-turno">Solicitar Turno</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" routerLink="/home/perfil">Mi perfil</a>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="!esPaciente">
+            <li class="nav-item">
+              <a class="nav-link active" routerLink="/home/turnos">Mis turnos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" routerLink="/home/perfil">Mi perfil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" routerLink="/home/pacientes">Pacientes</a>
             </li>
           </ng-container>
         </ul>
 
-        <ng-container *ngIf="nombreUsuario">
+        <ng-container *ngIf="loggedUser | async as user">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <span *ngIf="mostrarCorreo" class="nav-link"
-                >Usuario: {{ nombreUsuario }}</span
-              >
+              <span class="nav-link">Usuario: {{ user.displayName }}</span>
             </li>
           </ul>
         </ng-container>
 
-        <!-- CERRAR SESION -->
-        <form
-          *ngIf="usuarioConectado | async as user"
-          class="form-inline my-2 my-lg-0"
-        >
-          <button
-            class="btn btn-outline-danger my-2 my-sm-0"
-            type="submit"
-            (click)="logout()"
-          >
+        <form *ngIf="loggedUser | async as user" class="form-inline my-2 my-lg-0">
+          <button class="btn btn-outline-danger my-2 my-sm-0" type="button" (click)="logOut()">
             Cerrar Sesión
           </button>
         </form>
       </div>
     </nav>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>

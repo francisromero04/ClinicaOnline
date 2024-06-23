@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { BarranavComponent } from '../barranav/barranav.component';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from './../../services/auth.service';
 import { SwalService } from '../../services/swal.service';
 import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { BarranavinicialComponent } from '../barranavinicial/barranavinicial.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, BarranavComponent, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterOutlet, BarranavinicialComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -29,7 +29,7 @@ export default class LoginComponent implements OnInit {
     public autenticacion: AuthService,
     public ruta: Router,
     public inicializador: FormBuilder,
-    private mensajesEmergentes: SwalService
+    private mensajesEmergentes: SwalService,
   ) {
     this.formulario = this.inicializador.group({
       email: ['', [Validators.required, Validators.email]],
@@ -85,7 +85,7 @@ export default class LoginComponent implements OnInit {
       if (admin !== null) {
         await this.guardarLogueos(usuario.user.email);
         this.mensajesEmergentes.mostrarMensajeExitosoYNavegar([
-          '/homeAdmin/admin/presentacion',
+          '/homeAdmin/admin/',
         ]);
         return;
       }
