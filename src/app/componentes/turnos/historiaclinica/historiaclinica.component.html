@@ -1,0 +1,132 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="container mt-3">
+  <div class="form-group">
+    <label for="altura">Altura en cm:</label>
+    <input
+      type="number"
+      formControlName="altura"
+      id="altura"
+      class="form-control"
+    />
+    <div *ngIf="form.controls['altura'].errors != null">
+      <small
+        class="invalid"
+        *ngIf="
+          form.controls['altura'].errors!['required'] &&
+          form.controls['altura'].errors!['required'] &&
+          form.controls['altura'].touched
+        "
+        >Debe ingresar la altura del Paciente.
+      </small>
+      <small class="invalid" *ngIf="form.controls['altura'].errors['min']">
+        la altura del Paciente debe ser mayor o igual a 100 cm.
+      </small>
+      <small class="invalid" *ngIf="form.controls['altura'].errors['max']">
+        la altura del Paciente debe ser menor o igual a 230 cm.
+      </small>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="peso">Peso en kg:</label>
+    <input
+      type="number"
+      formControlName="peso"
+      id="peso"
+      class="form-control"
+    />
+    <div *ngIf="form.controls['peso'].errors != null">
+      <small
+        class="invalid"
+        *ngIf="
+          form.controls['peso'].errors!['required'] &&
+          form.controls['peso'].errors!['required'] &&
+          form.controls['peso'].touched
+        "
+        >Debe ingresar el peso del Paciente.
+      </small>
+      <small class="invalid" *ngIf="form.controls['peso'].errors['min']">
+        el peso del Paciente debe ser mayor o igual a 1.
+      </small>
+      <small class="invalid" *ngIf="form.controls['peso'].errors['max']">
+        el peso del Paciente debe ser menor o igual a 200.
+      </small>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="temperatura">Temperatura:</label>
+    <input
+      type="number"
+      formControlName="temperatura"
+      id="temperatura"
+      class="form-control"
+    />
+    <div *ngIf="form.controls['temperatura'].errors != null">
+      <small
+        class="invalid"
+        *ngIf="
+          form.controls['temperatura'].errors!['required'] &&
+          form.controls['temperatura'].errors!['required'] &&
+          form.controls['temperatura'].touched
+        "
+        >Debe ingresar la temperatura del Paciente.
+      </small>
+      <small class="invalid" *ngIf="form.controls['temperatura'].errors['min']">
+        la temperatura del Paciente debe ser mayor o igual a 34.
+      </small>
+      <small class="invalid" *ngIf="form.controls['temperatura'].errors['max']">
+        la temperatura del Paciente debe ser menor o igual a 42.
+      </small>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="presion">Presión:</label>
+    <input formControlName="presion" id="presion" class="form-control" />
+    <div *ngIf="form.controls['presion'].errors != null">
+      <small
+        class="invalid"
+        *ngIf="
+          form.controls['presion'].errors!['required'] &&
+          form.controls['presion'].errors!['required'] &&
+          form.controls['presion'].touched
+        "
+        >Debe ingresar la presion del Paciente.
+      </small>
+    </div>
+  </div>
+  <hr />
+
+  <div *ngIf="isFormArray(form.get('datosDinamicos'))">
+    <div formArrayName="datosDinamicos">
+      <div *ngFor="let dato of getDatosDinamicosControls(); let i = index">
+
+        <div [formGroupName]="i" class="row">
+          <div class="col">
+            <label for="clave">Nombre dato:</label>
+            <input class="form-control" type="text" id="clave" formControlName="clave" />
+          </div>
+
+          <div class="col">
+            <label for="valor">Dato:</label>
+            <input class="form-control" type="text" id="valor" formControlName="valor" />
+          </div>
+
+          <div class="col-auto align-self-end">
+            <button class="btn btn-danger mt-3" type="button" (click)="quitarDatoDinamico(i)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <button type="button" class="btn btn-secondary m-3" (click)="agregarDatoDinamico()">
+    Agregar Dato Dinámico
+  </button>
+
+  <button type="submit" class="btn btn-primary m-3">Guardar</button>
+</form>

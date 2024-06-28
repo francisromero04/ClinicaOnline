@@ -1,0 +1,166 @@
+<app-barranav></app-barranav>
+<div class="container mt-3 mb-3">
+  <div class="mb-3">
+    <label for="filtro" class="form-label">Buscar turno:</label>
+    <input
+      #filtro
+      type="text"
+      class="form-control bg-dark text-white"
+      id="filtro"
+      (input)="filtrarTurnos()"
+    />
+  </div>
+
+  <div style="height: 700px; overflow: auto">
+    <div *ngFor="let turno of turnosFiltrados | async">
+      <div class="card mb-3 bg-dark text-white border-secondary">
+        <div class="card-body">
+          <h4>
+            Estado del turno:
+            <span
+              [ngClass]="{
+                'estado-aceptado': turno.estado === 'aceptado' && turno.estado !== 'finalizado',
+                'estado-rechazado': turno.estado === 'rechazado' || turno.estado === 'cancelado',
+                'estado-espera': turno.estado === 'espera',
+                'estado-finalizado': turno.estado === 'finalizado'
+              }"
+            >
+              {{ turno.estado }}
+            </span>
+          </h4>
+          <h6 class="card-title">
+            Fecha: {{ turno.fecha }} a las {{ turno.hora }} hs.
+          </h6>
+          <p class="card-text">
+            Especialista: {{ turno.Especialista }}
+          </p>
+          <p class="card-text">Especialidad: {{ turno.Especialidad }}</p>
+
+          <div class="card mb-3 bg-secondary text-white border-secondary" *ngIf="turno.historiaClinica !== null">
+            <div class="card-header bg-dark text-white border-secondary">
+              <h2>Historia Clínica</h2>
+            </div>
+            <div class="card-body">
+              <p><strong>Altura:</strong> {{ turno.historiaClinica.altura }} cm</p>
+              <p><strong>Peso:</strong> {{ turno.historiaClinica.peso }} kg</p>
+              <p><strong>Temperatura:</strong> {{ turno.historiaClinica.temperatura }} °C</p>
+              <p><strong>Presión:</strong> {{ turno.historiaClinica.presion }}</p>
+              <div *ngFor="let dato of turno.historiaClinica.datosDinamicos | keyvalue">
+                <p><strong>{{ dato.key }}:</strong> {{ dato.value }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="resena && turno.uid === turnoA?.uid">
+            <p class="card-text" *ngIf="datoResena !== ''">Reseña: {{ datoResena }}</p>
+            <p class="card-text" *ngIf="datoComentario !== ''">Comentario: {{ datoComentario }}</p>
+            <button
+              type="button"
+              class="btn btn-danger mt-2"
+              (click)="ocultarResena()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-eye-slash"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"
+                />
+                <path
+                  d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"
+                />
+                <path
+                  d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="form-group" *ngIf="comentario && turno.uid == turnoA?.uid">
+            <label for="turnoComentario">Motivo:</label>
+            <textarea
+              class="form-control bg-dark text-white"
+              id="turnoComentario"
+              rows="3"
+              [(ngModel)]="motivoCancelacion"
+            ></textarea>
+            <button
+              type="button"
+              class="btn btn-outline-danger my-2 my-sm-0 mt-2"
+              (click)="cancelarTurno()"
+            >
+              Confirmar Cancelación
+            </button>
+          </div>
+
+          <div class="form-group" *ngIf="calificar && turno.uid == turnoA?.uid">
+            <label for="turnoComentario">Calificar Atención :</label>
+            <textarea
+              class="form-control bg-dark text-white"
+              id="turnoComentario"
+              rows="3"
+              [(ngModel)]="turnoCalificado"
+            ></textarea>
+            <button
+              type="button"
+              class="btn btn-danger mt-2"
+              (click)="calificarAtencion()"
+            >
+              Confirmar calificación
+            </button>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <div *ngIf="turno.estado === 'finalizado' && turno.atencion !== ''">
+              <button
+                type="button"
+                class="btn btn-primary me-2"
+                (click)="cargarAtencion(turno)"
+              >
+                Calificar atención
+              </button>
+            </div>
+            <div *ngIf="turno.estado === 'finalizado' && turno.encuesta === ''">
+              <button
+                type="button"
+                class="btn btn-success me-2"
+                (click)="completarEncuesta(turno)"
+              >
+                Completar encuesta
+              </button>
+            </div>
+            <div *ngIf="turno.resena != '' || turno.comentario != ''">
+              <button
+                type="button"
+                class="btn btn-info me-2"
+                (click)="verResena(turno)"
+              >
+                Ver reseña
+              </button>
+            </div>
+            <div
+              *ngIf="
+                turno.estado != 'finalizado' &&
+                turno.estado !== 'cancelado' &&
+                turno.estado !== 'rechazado'
+              "
+            >
+              <button
+                type="button"
+                class="btn btn-outline-danger my-2 my-sm-0 me-2"
+                (click)="cargarComentario(turno)"
+              >
+                Cancelar Turno
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

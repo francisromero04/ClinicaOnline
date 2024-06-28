@@ -1,0 +1,10 @@
+<main class="contenedor">
+  <div>
+    <div *ngIf="esPaciente">
+      <app-paciente [pacienteId]="id"></app-paciente>
+    </div>
+    <div *ngIf="!esPaciente">
+      <app-especialista [especialistaId]="id"></app-especialista>
+    </div>
+  </div>
+</main>

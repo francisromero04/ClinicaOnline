@@ -14,8 +14,12 @@ export const routes: Routes = [
   {
     path: 'admin/gestionEspecialistas',
     loadComponent: () => import('./gestion-de-especialistas/gestion-de-especialistas.component'),
+  },
+  {
+    path: 'admin/miperfil',
+    loadComponent: () => import('../miperfil/miperfil.component'),
   }
 ];
 
-export default routes; //tiene dentro rutas de mis juegos
+export default routes;
 

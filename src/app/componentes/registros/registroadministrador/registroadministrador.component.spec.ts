@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegistroadministradorComponent } from './registroadministrador.component';
+import  RegistroadministradorComponent from './registroadministrador.component';
 
 describe('RegistroadministradorComponent', () => {
   let component: RegistroadministradorComponent;
@@ -11,7 +11,7 @@ describe('RegistroadministradorComponent', () => {
       imports: [RegistroadministradorComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(RegistroadministradorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

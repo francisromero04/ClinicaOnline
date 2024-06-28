@@ -1,0 +1,104 @@
+<app-barranav></app-barranav>
+<div class="container mt-3 mb-3">
+  <h4 class="mb-3">Solicitar un turno</h4>
+  <form (ngSubmit)="onSubmit()" [formGroup]="formulario">
+    <div class="row g-3">
+      <div class="col-sm-6">
+        <label for="especialidad" class="form-label">Especialidad:</label>
+        <select
+          class="form-select bg-dark text-white"
+          id="especialidad"
+          formControlName="especialidad"
+          (ngModelChange)="enCambioEspecialidad($event)"
+        >
+          <option value="" disabled selected>Seleccione una especialidad</option>
+          <option *ngFor="let especialidad of especialidades" [value]="especialidad.uid">
+            {{ especialidad.nombre }}
+          </option>
+        </select>
+        <div *ngIf="formulario.controls['especialidad'].errors != null">
+          <small
+            class="invalid text-danger"
+            *ngIf="
+              formulario.controls['especialidad'].errors!['required'] &&
+              formulario.controls['especialidad'].touched
+            "
+          >
+            Debe seleccionar una especialidad.
+          </small>
+        </div>
+      </div>
+      <div *ngIf="cargando" class="text-center">
+        <div class="spinner-grow text-secondary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p>Cargando...</p>
+      </div>
+
+      <div *ngIf="especialidadSeleccionada">
+        <div class="col-sm-10">
+          <label for="especialista" class="form-label">Especialista:</label>
+          <div class="row">
+            <div *ngFor="let especialista of especialistasFiltrados" class="col-sm-3 m-1">
+              <button
+                class="btn btn-dark text-white"
+                type="button"
+                id="{{ especialista.uid }}"
+                (click)="enCambioEspecialista(especialista.uid)"
+              >
+                <span>{{ especialista.nombre }} {{ especialista.apellido }}</span>
+                <img
+                  [src]="especialista.foto1"
+                  alt="Imagen de {{ especialista.nombre }}"
+                  class="img-fluid especialidad-img mb-2"
+                />
+                <div>
+                  <p>Edad: {{ especialista.edad }}</p>
+                  <p>DNI: {{ especialista.dni }}</p>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="especialista">
+          <div class="col-sm-6">
+            <app-listaturnosdisponibles
+              [especialista]="especialista"
+              [especialidad]="especialidadSeleccionada"
+              (turnoSeleccionado)="enTurnoSeleccionado($event)"
+            ></app-listaturnosdisponibles>
+          </div>
+          <div *ngIf="fechaObtenida">
+            <div *ngIf="esAdmin == true">
+              <div class="col-sm-6">
+                <label for="paciente" class="form-label">Paciente:</label>
+                <select class="form-select bg-dark text-white" id="paciente" formControlName="paciente">
+                  <option value="" disabled selected>Seleccione un paciente</option>
+                  <option *ngFor="let paciente of pacientes" [value]="paciente.uid">
+                    {{ paciente.nombre }} {{ paciente.apellido }}
+                  </option>
+                </select>
+                <div *ngIf="formulario.controls['paciente'].errors != null">
+                  <small
+                    class="invalid text-danger"
+                    *ngIf="
+                      formulario.controls['paciente'].errors!['required'] &&
+                      formulario.controls['paciente'].touched
+                    "
+                  >
+                    Debe seleccionar un paciente.
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="my-4" />
+    <div class="text-center">
+      <button class="btn btn-dark rounded-pill" type="submit">Confirmar pedido de turno</button>
+    </div>
+  </form>
+</div>
+<router-outlet></router-outlet>

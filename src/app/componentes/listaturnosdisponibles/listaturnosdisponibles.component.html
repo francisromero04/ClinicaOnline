@@ -1,0 +1,34 @@
+<div *ngIf="spinnerDeCarga" class="text-center container mt-3">
+  <div class="spinner-grow text-secondary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <p class="text-secondary">Cargando fechas disponibles...</p>
+</div>
+<div class="container mt-3" *ngIf="!spinnerDeCarga">
+  <div style="height: 600px; overflow: auto">
+    <div *ngFor="let dia of diasDisponibles">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ obtenerFechaFormateada(dia.dia) }}</h5>
+          <div *ngFor="let hora of dia.horarios">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="turno"
+                id="{{ obtenerFechaFormateada(dia.dia) + '_' + hora }}"
+                (change)="seleccionarHora(dia.dia, hora)"
+              />
+              <label
+                class="form-check-label"
+                for="{{ obtenerFechaFormateada(dia.dia) + '_' + hora }}"
+              >
+                {{ hora }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

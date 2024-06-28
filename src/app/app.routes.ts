@@ -25,6 +25,19 @@ export const routes: Routes = [
       loadChildren: () => import('./componentes/usuarios/usuarios.routes')
     },
     {
+      path: 'turnos',
+      loadChildren: () => import('./componentes/turnos/turnos.routes')
+    },
+    {
+      path: 'gestionturnos',
+      loadComponent: () => import('./componentes/gestionturnos/gestionturnos.component') //solicitar turno
+    },
+
+    {
+      path: 'miperfil',
+      loadComponent: () => import('./componentes/miperfil/miperfil.component')
+    },
+    {
       path: "**", //¿estoy en cualquier ruta?
       redirectTo: 'error',
     }

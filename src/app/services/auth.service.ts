@@ -6,6 +6,9 @@ import Swal from 'sweetalert2';
 import { Admin } from '../clases/admin.js';
 import { Paciente } from '../clases/paciente.js';
 import { Especialista } from '../clases/especialista.js';
+import { Turno } from '../clases/turno.js';
+import { Horario } from '../clases/horario.js';
+import { HistoriaClinica } from '../clases/historiaClinica.js';
 
 @Injectable({
   providedIn: 'root'
@@ -63,7 +66,7 @@ export class AuthService {
   public async guardarLog(logueo: any) {
     try {
       const docRef = await addDoc(collection(this.db, 'logueos'), logueo);
-      console.log('Documento escrito con ID: ', docRef.id);
+      console.log('LOGUEO GUARDADO: Documento escrito con ID: ', docRef.id);
       return true;
     } catch (e) {
       console.error('Error al agregar el documento: ', e);
@@ -295,5 +298,185 @@ export class AuthService {
       throw error;
     }
   }
-}
 
+  public async obtenerTurnos(especialistaId: string): Promise<Turno[]> {
+    const q = query(
+      collection(this.db, 'turnos'),
+      where('especialista', '==', especialistaId)
+    );
+    const querySnapshot = await getDocs(q);
+    const turnos: Turno[] = [];
+
+    querySnapshot.forEach((doc) => {
+      const turnoData = doc.data();
+      const turno = new Turno(
+        doc.id,
+        turnoData['especialidad'],
+        turnoData['especialista'],
+        turnoData['paciente'],
+        turnoData['estado'],
+        turnoData['fecha'],
+        turnoData['hora']
+      );
+      turnos.push(turno);
+    });
+
+    return turnos;
+  }
+
+  async obtenerPacientes(): Promise<Paciente[]> {
+    try {
+      const q = query(collection(this.db, 'pacientes'));
+      const querySnapshot = await getDocs(q);
+
+      const pacientes: Paciente[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const pacienteData = doc.data();
+        const paciente = new Paciente(
+          pacienteData['uid'],
+          pacienteData['nombre'],
+          pacienteData['apellido'],
+          pacienteData['edad'],
+          pacienteData['dni'],
+          pacienteData['obraSocial'],
+          pacienteData['foto1'],
+          pacienteData['foto2']
+        );
+        pacientes.push(paciente);
+      });
+
+      return pacientes;
+    } catch (error) {
+      console.error('Error al obtener todos los pacientes: ', error);
+      return [];
+    }
+  }
+
+  public async obtenerTurnosDelUsuario(
+    uid: string,
+    tipo: string
+  ): Promise<Turno[]> {
+    let condicion = 'especialista';
+    if (tipo == 'paciente') {
+      condicion = 'paciente';
+    }
+    const q = query(collection(this.db, 'turnos'), where(condicion, '==', uid));
+    const querySnapshot = await getDocs(q);
+    const turnos: Turno[] = [];
+
+    querySnapshot.forEach((doc) => {
+      const turnoData = doc.data();
+      const turno = new Turno(
+        doc.id,
+        turnoData['especialista'],
+        turnoData['especialidad'],
+        turnoData['paciente'],
+        turnoData['estado'],
+        turnoData['fecha'],
+        turnoData['hora']
+      );
+      if (turnoData['comentario']) {
+        turno.comentario = turnoData['comentario'];
+      }
+      if (turnoData['resena']) {
+        turno.resena = turnoData['resena'];
+      }
+      if (turnoData['historiaClinica']) {
+        turno.historiaClinica = turnoData['historiaClinica'];
+      }
+      if (turnoData['encuesta']) {
+        turno.encuesta = turnoData['encuesta'];
+      }
+      if (turnoData['atencion']) {
+        turno.encuesta = turnoData['atencion'];
+      }
+      turnos.push(turno);
+    });
+
+    return turnos;
+  }
+
+  public async almacenarTurno(turno: Turno) {
+    try {
+      const docRef = await addDoc(collection(this.db, 'turnos'), {
+        especialidad: turno.idEspecialidad,
+        especialista: turno.idEspecialista,
+        paciente: turno.idPaciente,
+        estado: turno.estado,
+        fecha: turno.fecha,
+        hora: turno.hora,
+      });
+      console.log('Document written with ID: ', docRef.id);
+      return true;
+    } catch (e) {
+      console.error('Error adding document: ', e);
+      return false;
+    }
+  }
+
+  public async modificarTurno(turno: Turno): Promise<void> {
+    const turnoRef = doc(this.db, 'turnos', turno.uid);
+
+    await updateDoc(turnoRef, {
+      especialidad: turno.idEspecialidad,
+      especialista: turno.idEspecialista,
+      paciente: turno.idPaciente,
+      estado: turno.estado,
+      fecha: turno.fecha,
+      hora: turno.hora,
+      resena: turno.resena,
+      comentario: turno.comentario,
+      atencion: turno.atencion,
+      encuesta: turno.encuesta,
+      historiaClinica: turno.historiaClinica,
+    });
+  }
+
+  async actualizarHorariosEspecialista(
+    uid: string,
+    turnos: Horario[]
+  ): Promise<void> {
+    try {
+      const especialistasCollection = collection(this.db, 'especialistas');
+      const querys = query(especialistasCollection, where('uid', '==', uid));
+      const querySnapshot = await getDocs(querys);
+
+      if (querySnapshot.size === 0) {
+        console.log(
+          'No se encontró ningún especialista con el UID interno proporcionado'
+        );
+        return;
+      }
+
+      querySnapshot.forEach((docSnapshot) => {
+        const especialistaRef = doc(this.db, 'especialistas', docSnapshot.id);
+        updateDoc(especialistaRef, { turnos: turnos });
+      });
+    } catch (error) {
+      console.error(
+        'Error al actualizar los horarios del especialista: ',
+        error
+      );
+      throw error;
+    }
+  }
+
+  public async guardarHistoriaClinica(historia: HistoriaClinica) {
+    try {
+      const docRef = await addDoc(collection(this.db, 'historiasClinicas'), {
+        altura: historia.altura,
+        peso: historia.peso,
+        temperatura: historia.temperatura,
+        presion: historia.presion,
+        datosDinamicos: historia.datosDinamicos,
+      });
+      console.log('Document written with ID: ', docRef.id);
+      return docRef.id;
+    } catch (e) {
+      console.error('Error adding document: ', e);
+      return false;
+    }
+  }
+
+}
