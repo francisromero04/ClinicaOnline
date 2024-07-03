@@ -37,6 +37,10 @@ export const routes: Routes = [
       loadComponent: () => import('./componentes/miperfil/miperfil.component')
     },
     {
+      path: 'usuariospacientes',
+      loadComponent: () => import('./componentes/usuarios-pacientes/usuarios-pacientes.component')
+    },
+    {
       path: "**", //¿estoy en cualquier ruta?
       redirectTo: 'error',
     }

@@ -26,6 +26,10 @@ export const routes: Routes = [
   {
     path: 'admin/solicitarturnoadm',
     loadComponent: () => import('../gestionturnos/gestionturnos.component') //solicitar turno
+  },
+  {
+    path: 'admin/usuariospacientes',
+    loadComponent: () => import('../usuarios-pacientes/usuarios-pacientes.component')
   }
 ];
 

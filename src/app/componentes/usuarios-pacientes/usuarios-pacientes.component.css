@@ -1,0 +1,135 @@
+/* Importar la fuente Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.container {
+  margin-top: 20px;
+}
+
+.fab-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.fab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fab-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-style {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+}
+
+.texto {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.card-header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-bottom: 1px solid #0069d9;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.card-subtitle {
+  font-size: 1.1rem;
+}
+
+.card-body p {
+  margin: 5px 0;
+}
+
+.form-check-input {
+  margin-right: 10px;
+}
+
+.spinner-grow {
+  width: 3rem;
+  height: 3rem;
+}
+
+.no-historias-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #122933;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.no-historias-message h4 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+
+.no-historias-message p {
+  margin: 5px 0 0;
+  color: #ffffff;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.historia-card {
+  background-color: #122933;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+
+.historia-card-header {
+  background-color: #394149;
+  border-bottom: 1px solid #394149;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 15px;
+}
+
+.historia-card-body {
+  padding: 15px;
+}
+
+.historia-card .card-title,
+.historia-card .card-subtitle {
+  margin: 0;
+}
+
+.historia-card .card-subtitle {
+  color: #b0bfc6;
+}
+
+.form-check-input {
+  margin-right: 10px;
+}
+
+.alert-info {
+  background-color: #b0bfc6;
+  color: #122933;
+}
