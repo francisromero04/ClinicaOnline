@@ -32,6 +32,8 @@ export default class MiPerfilComponent implements OnInit {
   especialistaSeleccionado: boolean = false;
   historiasClinicas: Turno[] = [];
   especialistasT: Especialista[] = [];
+  loading: boolean = false;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -40,11 +42,13 @@ export default class MiPerfilComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.loading = true;
     await this.user();
     this.identidad = localStorage.getItem('identidad');
     if (this.identidad == 'paciente') {
       await this.cargar();
     }
+    this.loading = false;
   }
 
   async cargar() {

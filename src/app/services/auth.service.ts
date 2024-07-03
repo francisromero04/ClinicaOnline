@@ -479,4 +479,62 @@ export class AuthService {
     }
   }
 
+  async getAllPacientes(): Promise<Paciente[]> {
+    try {
+      const q = query(collection(this.db, 'pacientes'));
+      const querySnapshot = await getDocs(q);
+
+      const pacientes: Paciente[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const pacienteData = doc.data();
+        const paciente = new Paciente(
+          pacienteData['uid'],
+          pacienteData['nombre'],
+          pacienteData['apellido'],
+          pacienteData['edad'],
+          pacienteData['dni'],
+          pacienteData['obraSocial'],
+          pacienteData['foto1'],
+          pacienteData['foto2']
+        );
+        pacientes.push(paciente);
+      });
+
+      return pacientes;
+    } catch (error) {
+      console.error('Error al obtener todos los pacientes: ', error);
+      return [];
+    }
+  }
+
+  public async obtenerTodosLosTurnos(): Promise<Turno[]> {
+    const querySnapshot = await getDocs(collection(this.db, 'turnos'));
+    const turnos: Turno[] = [];
+
+    querySnapshot.forEach((doc) => {
+      const turnoData = doc.data();
+      const turno = new Turno(
+        doc.id,
+        turnoData['especialista'],
+        turnoData['especialidad'],
+        turnoData['paciente'],
+        turnoData['estado'],
+        turnoData['fecha'],
+        turnoData['hora']
+      );
+      if (turnoData['comentario']) {
+        turno.comentario = turnoData['comentario'];
+      }
+      if (turnoData['resena']) {
+        turno.resena = turnoData['resena'];
+      }
+      if (turnoData['historiaClinica']) {
+        turno.historiaClinica = turnoData['historiaClinica'];
+      }
+      turnos.push(turno);
+    });
+
+    return turnos;
+  }
 }

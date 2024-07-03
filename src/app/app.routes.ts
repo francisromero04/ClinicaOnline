@@ -29,10 +29,9 @@ export const routes: Routes = [
       loadChildren: () => import('./componentes/turnos/turnos.routes')
     },
     {
-      path: 'gestionturnos',
+      path: 'solicitarturno',
       loadComponent: () => import('./componentes/gestionturnos/gestionturnos.component') //solicitar turno
     },
-
     {
       path: 'miperfil',
       loadComponent: () => import('./componentes/miperfil/miperfil.component')

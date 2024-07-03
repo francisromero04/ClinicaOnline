@@ -1,0 +1,16 @@
+.estado-aceptado {
+  color: green; /* Verde para estado aceptado */
+}
+
+.estado-rechazado,
+.estado-cancelado {
+  color: red; /* Rojo para estados rechazado y cancelado */
+}
+
+.estado-espera {
+  color: grey; /* Gris para estado en espera */
+}
+
+.estado-finalizado {
+  color: blue; /* Azul para estado finalizado */
+}

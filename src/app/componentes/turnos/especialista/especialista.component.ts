@@ -31,7 +31,7 @@ export default class EspecialistaComponent{
   datoResena: string = '';
   datoComentario: string = '';
   @Input() especialistaId: string = '';
-
+  loading : boolean = false;
   @ViewChild('filtro') filtro!: ElementRef;
 
   private _turnos = new BehaviorSubject<any[]>([]);
@@ -77,11 +77,13 @@ export default class EspecialistaComponent{
 
   async ngOnInit(): Promise<void> {
     this.spinner.show();
+    this.loading = true;
     console.log(this.especialistaId);
     await this.cargarTurnos();
     setTimeout(() => {
       this.spinner.hide();
     }, 2000);
+    this.loading = false;
   }
 
 

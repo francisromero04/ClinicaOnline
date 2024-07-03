@@ -15,11 +15,12 @@ import { Turno } from '../../clases/turno';
 import Swal from 'sweetalert2';
 import { ListaturnosdisponiblesComponent } from '../listaturnosdisponibles/listaturnosdisponibles.component';
 import { BarranavComponent } from '../barranav/barranav.component';
+import { AdminNavbarComponent } from '../usuarios/admin-navbar/admin-navbar.component';
 
 @Component({
   selector: 'app-gestionturnos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ListaturnosdisponiblesComponent, BarranavComponent, RouterOutlet],
+  imports: [CommonModule, ReactiveFormsModule, ListaturnosdisponiblesComponent, BarranavComponent, AdminNavbarComponent, RouterOutlet],
   templateUrl: './gestionturnos.component.html',
   styleUrl: './gestionturnos.component.css'
 })
@@ -42,6 +43,7 @@ export default class GestionturnosComponent {
   paciente: string | undefined = undefined;
   especialistaFalso: boolean = false;
   cargando: boolean = false;
+  identidad: string | null = '';
 
   constructor(
     private servicioAutenticacion: AuthService,
@@ -51,6 +53,7 @@ export default class GestionturnosComponent {
 
   async ngOnInit(): Promise<void> {
     this.cargando = true;
+    this.identidad = localStorage.getItem('identidad');
     this.formulario = new FormGroup({
       especialidad: new FormControl('', [Validators.required]),
       especialista: new FormControl('', [Validators.required]),

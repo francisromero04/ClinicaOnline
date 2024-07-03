@@ -18,6 +18,14 @@ export const routes: Routes = [
   {
     path: 'admin/miperfil',
     loadComponent: () => import('../miperfil/miperfil.component'),
+  },
+  {
+    path: 'admin/seccionturnos',
+    loadComponent: () => import('../usuarios/seccionturnosadmin/seccionturnosadmin.component'),
+  },
+  {
+    path: 'admin/solicitarturnoadm',
+    loadComponent: () => import('../gestionturnos/gestionturnos.component') //solicitar turno
   }
 ];
 

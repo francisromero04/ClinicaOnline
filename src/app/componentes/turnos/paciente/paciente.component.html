@@ -1,7 +1,7 @@
 <app-barranav></app-barranav>
-<div class="container mt-3 mb-3">
+<div class="container text-white mt-3 mb-3">
   <div class="mb-3">
-    <label for="filtro" class="form-label">Buscar turno:</label>
+    <label for="filtro" class="form-label label-white">Buscar turno:</label>
     <input
       #filtro
       type="text"
@@ -9,6 +9,12 @@
       id="filtro"
       (input)="filtrarTurnos()"
     />
+  </div>
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-grow text-secondary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p>Cargando mis turnos...</p>
   </div>
 
   <div style="height: 700px; overflow: auto">
@@ -83,7 +89,7 @@
           <div class="form-group" *ngIf="comentario && turno.uid == turnoA?.uid">
             <label for="turnoComentario">Motivo:</label>
             <textarea
-              class="form-control bg-dark text-white"
+              class="form-control bg-secondary text-white border-secondary"
               id="turnoComentario"
               rows="3"
               [(ngModel)]="motivoCancelacion"

@@ -1,5 +1,14 @@
-<app-barranav></app-barranav>
-<div class="container mt-3 mb-3">
+<!--Navbar para admin-->
+<div *ngIf="identidad === 'admin'">
+  <app-admin-navbar></app-admin-navbar>
+</div>
+
+<!--Navbar para paciente o especialista-->
+<div *ngIf="identidad === 'paciente'">
+  <app-barranav></app-barranav>
+</div>
+
+<div class="container text-white mt-3 mb-3">
   <h4 class="mb-3">Solicitar un turno</h4>
   <form (ngSubmit)="onSubmit()" [formGroup]="formulario">
     <div class="row g-3">
@@ -32,7 +41,7 @@
         <div class="spinner-grow text-secondary" role="status">
           <span class="visually-hidden">Cargando...</span>
         </div>
-        <p>Cargando...</p>
+        <p>Cargando especialidades...</p>
       </div>
 
       <div *ngIf="especialidadSeleccionada">

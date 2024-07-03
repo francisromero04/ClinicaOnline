@@ -14,3 +14,7 @@
 .estado-finalizado {
   color: blue; /* Azul para estado finalizado */
 }
+
+.label-white {
+  color: white;
+}
