@@ -24,6 +24,20 @@ export class AuthService {
     });
   }
 
+  // Ejemplo de función para obtener días disponibles
+  async obtenerDiasDisponibles(especialidadId: string): Promise<string[]> {
+    // Aquí va la lógica para obtener los días disponibles
+    // Ejemplo: Simplemente devolver un array estático para demostración
+    return ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  }
+
+  // Ejemplo de función para obtener horarios disponibles
+  async obtenerHorariosDisponibles(diaSeleccionado: string): Promise<string[]> {
+    // Aquí va la lógica para obtener los horarios disponibles para un día dado
+    // Ejemplo: Simplemente devolver un array estático para demostración
+    return ['08:00','09:00', '10:00', '11:00', '15:00', '16:00', '17:00', '18:00'];
+  }
+
   obtenerUsuarioConectado(){
     return this.autenticacion.authState;
   }
@@ -536,5 +550,21 @@ export class AuthService {
     });
 
     return turnos;
+  }
+
+  public async obtenerLogs() {
+    try {
+      const Ref = collection(this.db, 'logueos');
+      const querySnapshot = await getDocs(Ref);
+
+      const logs = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+
+      return logs;
+    } catch (error) {
+      console.error('Error al obtener los logs: ', error);
+      return [];
+    }
   }
 }

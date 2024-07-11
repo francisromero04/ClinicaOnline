@@ -4,15 +4,14 @@ import { Router } from '@angular/router';
 import { Paciente } from '../../../clases/paciente';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
-import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-registropaciente',
   standalone: true,
   imports: [
-    RecaptchaFormsModule,
     RecaptchaModule,
     CommonModule,
     ReactiveFormsModule,
@@ -30,11 +29,18 @@ export default class RegistropacienteComponent {
   errorCheck: boolean = false;
   Message: string = '';
   user: any;
-  captcha: string;
   estaRegistrado: boolean = false;
+  captcha: string;
+  captchaResuelto: boolean = false;  // Variable para controlar la visibilidad del mensaje
 
   constructor(private autenticacion: AuthService, private router: Router) {
     this.captcha = '';
+  }
+
+  resolved(captchaResponse: string) {
+    this.captcha = captchaResponse;
+    this.captchaResuelto = true;  // Marcar que el captcha ha sido resuelto
+    // console.log('captcha resuelto con response: ' + this.captcha);
   }
 
   ngOnInit(): void {
@@ -157,10 +163,5 @@ export default class RegistropacienteComponent {
         timer: 4000,
       });
     }
-  }
-
-  resolved(captchaResponse: string) {
-    this.captcha = captchaResponse;
-    console.log('Captcha resuelto con la respuesta: ' + this.captcha);
   }
 }

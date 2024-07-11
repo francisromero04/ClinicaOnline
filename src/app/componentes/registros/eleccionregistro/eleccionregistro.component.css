@@ -16,5 +16,14 @@
 }
 
 .registro-buttons .btn {
-  margin: 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 0 10px; /* Espacio entre los botones */
 }
+
+.registro-icon {
+  width: 100px; /* Ajusta el tamaño de las imágenes según sea necesario */
+  height: auto;
+}
+

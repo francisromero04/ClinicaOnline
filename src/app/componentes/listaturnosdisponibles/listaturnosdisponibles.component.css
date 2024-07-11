@@ -1,0 +1,15 @@
+/* styles.css (o tu archivo CSS principal) */
+
+/* Estilos para los botones de especialista */
+.especialista-btn {
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* Estilos para los botones de día */
+.btn-day {
+  border-radius: 10px;
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+}

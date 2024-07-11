@@ -201,30 +201,51 @@ export default class GestionturnosComponent {
     }
   }
 
-  async validarTurno(idPaciente: string) {
+  async validarTurno(idPaciente: string): Promise<boolean> {
     const especialidad = this.formulario.controls['especialidad'].value;
+    const fechaSeleccionada = this.formulario.controls['fecha'].value;
+    const horaSeleccionada = this.formulario.controls['hora'].value;
+    const idEspecialista = this.formulario.controls['especialista'].value;
 
+    // Obtener los turnos del paciente
     const turnosDelPaciente = await this.servicioAutenticacion.obtenerTurnosDelUsuario(
       idPaciente,
       'paciente'
     );
 
-    const turnosEnLaMismaEspecialidad = turnosDelPaciente.filter(
-      (turno) => turno.idEspecialidad == especialidad
+    for (const turno of turnosDelPaciente) {
+      if (turno.fecha === fechaSeleccionada && turno.hora === horaSeleccionada) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ya tiene un turno en ese horario. No se puede solicitar otro turno.',
+          timer: 3000
+        });
+        return false;
+      }
+    }
+
+    // Obtener los turnos del especialista
+    const turnosDelEspecialista = await this.servicioAutenticacion.obtenerTurnosDelUsuario(
+      idEspecialista,
+      'especialista'
     );
 
-    if (turnosEnLaMismaEspecialidad.length > 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'El paciente ya tiene un turno en esta especialidad.',
-        timer: 2500,
-      });
-      return false;
-    } else {
-      return true;
+    for (const turno of turnosDelEspecialista) {
+      if (turno.fecha === fechaSeleccionada && turno.hora === horaSeleccionada && turno.estado === 'aceptado') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'El especialista ya tiene un turno aceptado en ese horario. No se puede solicitar el turno.',
+          timer: 3000
+        });
+        return false;
+      }
     }
+
+    return true;
   }
+
 
   async cargarTurno(paciente: string) {
     try {

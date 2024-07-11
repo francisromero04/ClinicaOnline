@@ -118,9 +118,17 @@
                 </div>
               </div>
 
-              <div class="text-center">
-                <button class="btn btn-outline-light btn-lg px-5" type="submit">REGISTRARSE</button>
+              <div class="text-center mb-4" [ngClass]="{'captcha-completed': captchaResuelto}">
+                <re-captcha (resolved)="resolved($event)" siteKey="6LcEEPwpAAAAAHT_Mn2BAhWmjCYMeqEZx77Q8xhs"></re-captcha>
               </div>
+
+              <div class="text-center">
+                <button class="btn btn-outline-light btn-lg px-5" type="submit" [disabled]="!captcha">REGISTRARSE</button>
+              </div>
+
+              <!-- <div class="text-center">
+                <button class="btn btn-outline-light btn-lg px-5" type="submit">REGISTRARSE</button>
+              </div> -->
 
               <hr>
             </form>

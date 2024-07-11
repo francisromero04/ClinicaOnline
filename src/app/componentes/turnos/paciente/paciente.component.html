@@ -131,13 +131,13 @@
               </button>
             </div>
             <div *ngIf="turno.estado === 'finalizado' && turno.encuesta === ''">
-              <button
+              <!-- <button
                 type="button"
                 class="btn btn-success me-2"
                 (click)="completarEncuesta(turno)"
               >
                 Completar encuesta
-              </button>
+              </button> -->
             </div>
             <div *ngIf="turno.resena != '' || turno.comentario != ''">
               <button

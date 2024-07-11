@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { Admin } from '../../../clases/admin';
 import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { AdminNavbarComponent } from '../../usuarios/admin-navbar/admin-navbar.component';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-registroadministrador',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AdminNavbarComponent, RouterOutlet],
+  imports: [CommonModule, ReactiveFormsModule, AdminNavbarComponent, RouterOutlet, RecaptchaModule],
   templateUrl: './registroadministrador.component.html',
   styleUrl: './registroadministrador.component.css',
 })
@@ -27,11 +27,18 @@ export default class RegistroadministradorComponent {
   formulario: FormGroup;
   verificacionDeError: boolean = false;
   mensaje: string = '';
+  captcha: string = '';
+  captchaResuelto: boolean = false;  // Variable para controlar la visibilidad del mensaje
 
-  constructor(
-    private servicioDeAutenticacion: AuthService,
-    private enrutador: Router
-  ) {}
+  constructor(private servicioDeAutenticacion: AuthService) {
+    this.captcha = '';
+  }
+
+  resolved(captchaResponse: string) {
+    this.captcha = captchaResponse;
+    this.captchaResuelto = true;  // Marcar que el captcha ha sido resuelto
+    // console.log('captcha resuelto con response: ' + this.captcha);
+  }
 
   ngOnInit(): void {
     this.formulario = new FormGroup({
@@ -80,8 +87,17 @@ export default class RegistroadministradorComponent {
     }
   }
 
-
   onSubmit() {
+    if (this.captcha === '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor, complete el captcha',
+        timer: 2500,
+      });
+      return;
+    }
+
     if (this.formulario.valid) {
       this.cargarUsuario();
     } else {

@@ -25,6 +25,15 @@ export default class LoginComponent implements OnInit {
   cargandoImagenes: boolean = false;
   registroActivo: boolean = false;
 
+  usuariosAccesoRapido = [
+    { email: 'pacake7525@apn7.com', password: 'paciente1', tipo: 'Paciente Juan', imagen: 'assets/img/paciente.png' },
+    { email: 'jaxale2608@bsidesmn.com', password: 'paciente2', tipo: 'Paciente Maria', imagen: 'assets/img/paciente.png' },
+    { email: 'naxit88876@apn7.com', password: 'paciente3', tipo: 'Paciente Carlos', imagen: 'assets/img/paciente.png' },
+    { email: 'literiv375@bacaki.com', password: 'especialista1', tipo: 'Especialista Laura', imagen: 'assets/img/especialista.png' },
+    { email: 'ketoyil643@bsidesmn.com', password: 'especialista2', tipo: 'Especialista Miguel', imagen: 'assets/img/especialista.png' },
+    { email: 'mimado9373@atebin.com', password: 'admin1', tipo: 'Administrador Francis', imagen: 'assets/img/admin.png' }
+  ];
+
   constructor(
     public autenticacion: AuthService,
     public ruta: Router,

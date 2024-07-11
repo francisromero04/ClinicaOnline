@@ -1,0 +1,13 @@
+.loading {
+  text-align: center;
+  font-size: 2em;
+}
+
+.chart-container {
+  margin-bottom: 2em;
+}
+
+.chart {
+  width: 100%;
+  height: 400px;
+}

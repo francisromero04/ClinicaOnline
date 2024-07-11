@@ -1,0 +1,7 @@
+.captcha-completed .grecaptcha-badge {
+  display: none;
+}
+
+.captcha-completed .rc-anchor {
+  border: 2px solid #0f0;
+}

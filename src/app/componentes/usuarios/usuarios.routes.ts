@@ -30,7 +30,7 @@ export const routes: Routes = [
   {
     path: 'admin/usuariospacientes',
     loadComponent: () => import('../usuarios-pacientes/usuarios-pacientes.component')
-  }
+  },
 ];
 
 export default routes;

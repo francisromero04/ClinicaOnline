@@ -11,11 +11,12 @@ import { Especialidad } from '../../../clases/especialidad';
 import { Especialista } from '../../../clases/especialista';
 import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-registroespecialista',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RecaptchaModule],
   templateUrl: './registroespecialista.component.html',
   styleUrl: './registroespecialista.component.css',
 })
@@ -29,9 +30,18 @@ export default class RegistroespecialistaComponent {
   especialidadesSeleccionadas: Especialidad[] = [];
   nuevaEspecialidad: string = '';
   especialidades: Especialidad[] = [];
-  // captcha = CAPTCHA;
+  captcha: string = '';
+  captchaResuelto: boolean = false;  // Variable para controlar la visibilidad del mensaje
 
-  constructor(private autenticacion: AuthService, private ruta: Router) {}
+  constructor(private autenticacion: AuthService, private ruta: Router) {
+    this.captcha = '';
+  }
+
+  resolved(captchaResponse: string) {
+    this.captcha = captchaResponse;
+    this.captchaResuelto = true;  // Marcar que el captcha ha sido resuelto
+    // console.log('captcha resuelto con response: ' + this.captcha);
+  }
 
   ngOnInit(): void {
     this.formulario = new FormGroup({
@@ -58,7 +68,6 @@ export default class RegistroespecialistaComponent {
         Validators.minLength(6),
       ]),
       fotoespecialista: new FormControl('', [Validators.required]),
-      // recaptchaReactive: new FormControl(null, Validators.required),
     });
 
     this.cargarEspecialidades();
@@ -186,6 +195,4 @@ export default class RegistroespecialistaComponent {
       });
     }
   }
-
-  resolved(captchaResponse: string) {}
 }

@@ -17,11 +17,16 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 @Component({
   selector: 'app-miperfil',
   standalone: true,
-  imports: [CommonModule, FormsModule, BarranavComponent, AdminNavbarComponent, RouterOutlet],
+  imports: [
+    CommonModule,
+    FormsModule,
+    BarranavComponent,
+    AdminNavbarComponent,
+    RouterOutlet,
+  ],
   templateUrl: './miperfil.component.html',
-  styleUrl: './miperfil.component.css'
+  styleUrl: './miperfil.component.css',
 })
-
 export default class MiPerfilComponent implements OnInit {
   identidad: string | null = '';
   usuario: any = null;
@@ -72,7 +77,6 @@ export default class MiPerfilComponent implements OnInit {
       (historia) => historia.historiaClinica !== null
     );
 
-
     for (const historia of this.historiasClinicas) {
       let especialistaObj =
         especialistas.find((e) => e.uid === historia.idEspecialista) || null;
@@ -81,7 +85,6 @@ export default class MiPerfilComponent implements OnInit {
         this.especialistasT.push(especialistaObj);
       }
     }
-
   }
 
   async filtrarEspecialistas(especialistaUid: string) {
@@ -117,6 +120,7 @@ export default class MiPerfilComponent implements OnInit {
   verhistorias() {
     this.createPDF(this.historiasClinicas);
   }
+
   verhistoriasFiltrada() {
     this.filtrar = !this.filtrar;
   }
@@ -138,7 +142,7 @@ export default class MiPerfilComponent implements OnInit {
   }
 
   async createPDF(historiasPruebaPdf: Turno[]) {
-    let imagen = await this.convertImageToBase64('../assets/logoClinica.png');
+    let imagen = await this.convertImageToBase64('assets/img/fotoclinica.jpg');
     let now = new Date();
     let fechaEmision = `${now.getDate()}/${
       now.getMonth() + 1
@@ -166,84 +170,105 @@ export default class MiPerfilComponent implements OnInit {
     });
 
     let pdfDefinition: any = {
-      watermark: {
-        text: 'Clinica online',
-        color: 'blue',
-        opacity: 0.1,
-        bold: true,
-        italics: false,
-      },
       content: [
         {
           image: imagen,
-          width: 300,
+          width: 100,
           alignment: 'center',
+          margin: [0, 0, 0, 10],
         },
         {
           text: 'Historia Clínica',
-          fontSize: 30,
-          color: 'blue',
+          fontSize: 24,
           bold: true,
-          margin: [0, 20, 0, 20],
+          alignment: 'center',
+          color: '#2E7D32',
+          margin: [0, 10, 0, 10],
         },
-        { text: `Fecha de emisión: ${fechaEmision}`, fontSize: 20 },
+        {
+          text: `Fecha de emisión: ${fechaEmision}`,
+          fontSize: 12,
+          alignment: 'center',
+          margin: [0, 0, 0, 10],
+        },
         ...historiasClinicasArray.map((historiaClinica) => [
           {
-            text: `-----------------------------------------------------------------`,
-            fontSize: 20,
-            margin: [0, 10, 0, 0],
-          },
-          {
             text: `Especialista: ${historiaClinica.Especialista}`,
-            fontSize: 20,
+            fontSize: 14,
+            bold: true,
             margin: [0, 10, 0, 0],
           },
           {
             text: `Especialidad: ${historiaClinica.Especialidad}`,
-            fontSize: 20,
-            margin: [0, 10, 0, 0],
+            fontSize: 14,
+            margin: [0, 5, 0, 5],
           },
           {
             text: `Paciente: ${historiaClinica.Paciente}`,
-            fontSize: 20,
-            margin: [0, 10, 0, 0],
+            fontSize: 14,
+            margin: [0, 5, 0, 5],
           },
           {
             text: `Fecha: ${historiaClinica.fecha}`,
-            fontSize: 20,
-            margin: [0, 10, 0, 0],
+            fontSize: 14,
+            margin: [0, 5, 0, 5],
           },
           {
             text: `Altura: ${historiaClinica.altura} cm`,
-            fontSize: 20,
-            margin: [0, 10, 0, 0],
+            fontSize: 14,
+            margin: [0, 5, 0, 5],
           },
           {
             text: `Peso: ${historiaClinica.peso} kg`,
-            fontSize: 20,
-            margin: [0, 10, 0, 0],
+            fontSize: 14,
+            margin: [0, 5, 0, 5],
           },
           {
             text: `Presión: ${historiaClinica.presion}`,
-            fontSize: 20,
-            margin: [0, 10, 0, 0],
+            fontSize: 14,
+            margin: [0, 5, 0, 5],
           },
           {
             text: `Temperatura: ${historiaClinica.temperatura} °C`,
-            fontSize: 20,
-            margin: [0, 10, 0, 0],
+            fontSize: 14,
+            margin: [0, 5, 0, 5],
           },
           ...(historiaClinica.datosDinamicos
             ? Object.entries(historiaClinica.datosDinamicos).map(
                 ([key, value]) => ({
                   text: `${key}: ${value}`,
-                  fontSize: 20,
-                  margin: [0, 10, 0, 0],
+                  fontSize: 14,
+                  margin: [0, 5, 0, 5],
                 })
               )
             : []),
+            {
+              text: `------------------------------------------------------------------------------------------------------------------------------------`,
+              fontSize: 14,
+            },
         ]),
       ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10],
+        },
+        subheader: {
+          fontSize: 15,
+          bold: true,
+          margin: [0, 10, 0, 5],
+        },
+        quote: {
+          italics: true,
+          alignment: 'center',
+          margin: [0, 10, 0, 10],
+        },
+      },
+      defaultStyle: {
+        fontSize: 12,
+        columnGap: 20,
+      },
     };
 
     const pdf = pdfMake.createPdf(pdfDefinition);

@@ -3,14 +3,14 @@
   <app-admin-navbar></app-admin-navbar>
 </div>
 
-<!--Navbar para paciente o especialista-->
-<div *ngIf="identidad === 'paciente' || identidad === 'especialista'">
+<!--Navbar para especialista-->
+<div *ngIf=" identidad === 'especialista'">
   <app-barranav></app-barranav>
 </div>
 
 <div class="container text-white mt-3">
   <div *ngIf="!loading">
-    <div *ngIf="identidad === 'especialista' || identidad === 'admin'">
+    <div *ngIf="identidad === 'admin'">
       <!-- Fab por cada paciente -->
       <div class="fab-container">
         <ng-container *ngFor="let historia of historiasClinicasUnicas">
@@ -19,7 +19,7 @@
               <button
                 class="btn btn-light button-style"
                 (click)="
-                  mostrarHistoriasClinicasDePaciente(historia.idPaciente)
+                  mostraryDescargarHistoriasClinicasDePaciente(historia.idPaciente)
                 "
                 [style.backgroundImage]="'url(' + historia.fotoPaciente + ')'"
               ></button>

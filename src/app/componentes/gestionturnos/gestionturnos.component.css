@@ -1,0 +1,73 @@
+/* Estilos para los botones de profesionales */
+.btn-profesional {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: #343a40; /* Color de fondo */
+  border: 1px solid #343a40; /* Borde */
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-profesional:hover {
+  background-color: #212529; /* Cambio de color de fondo al pasar el mouse */
+  border-color: #212529; /* Cambio de color de borde al pasar el mouse */
+  transform: translateY(-2px); /* Efecto de elevación al pasar el mouse */
+}
+
+.btn-profesional img {
+  width: 80px; /* Tamaño de la imagen */
+  height: 80px;
+  border-radius: 50%; /* Borde redondeado para la imagen */
+  object-fit: cover;
+}
+
+/* Estilos para los botones de días */
+.btn-dia {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: #343a40; /* Color de fondo */
+  border: 1px solid #343a40; /* Borde */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-dia:hover {
+  background-color: #212529; /* Cambio de color de fondo al pasar el mouse */
+  border-color: #212529; /* Cambio de color de borde al pasar el mouse */
+}
+
+/* Estilos para los botones de horarios */
+.btn-horario {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: #343a40; /* Color de fondo */
+  border: 1px solid #343a40; /* Borde */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-horario:hover {
+  background-color: #212529; /* Cambio de color de fondo al pasar el mouse */
+  border-color: #212529; /* Cambio de color de borde al pasar el mouse */
+}
+
+/* Estilos generales para el formulario y otros elementos */
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.text-center {
+  text-align: center;
+}

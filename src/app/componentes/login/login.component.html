@@ -21,15 +21,14 @@
                 </div>
 
                 <div class="form-outline form-white mb-4">
-                  <input type="password" class="form-control form-control-lg" id="password" placeholder="Contraseña" formControlName="password" />
-                  <label class="form-label" for="password">Contraseña</label>
+                  <input type="password" class="form-control form-control-lg" id="password" formControlName="password" placeholder="password" />
+                  <label class="form-label" for="password">Password</label>
                   <div *ngIf="formulario.controls['password'].touched && formulario.controls['password'].invalid">
                     <small class="invalid" *ngIf="formulario.controls['password'].hasError('required')">Debe ingresar su contraseña.</small>
                   </div>
                 </div>
 
-                <button class="btn btn-outline-light btn-lg px-5" id="btnLogin" type="submit">INGRESAR</button>
-                <hr>
+                <button class="btn btn-outline-light btn-lg px-5" type="submit" [disabled]="formulario.invalid">Ingresar</button>
               </div>
             </form>
           </div>
@@ -38,4 +37,23 @@
     </div>
   </div>
 </section>
-<router-outlet></router-outlet>
+
+<section class="vh-50 gradient-custom mt-1" style="margin-top: 1px;">
+  <div class="container">
+    <div class="row d-flex justify-content-center">
+      <div class="col-12">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+          <div class="card-body p-3 text-center">
+            <h5>Acceso Rápido:</h5>
+            <div class="btn-container d-flex justify-content-around flex-wrap">
+              <button *ngFor="let usuario of usuariosAccesoRapido" class="btn btn-secondary m-2" (click)="onButtonClick(usuario)">
+                <img [src]="usuario.imagen" alt="Imagen de perfil" class="img-thumbnail">
+                <p>{{ usuario.tipo }}</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
