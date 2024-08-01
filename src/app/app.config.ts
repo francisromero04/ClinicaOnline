@@ -1,5 +1,5 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withViewTransitions } from '@angular/router';
 import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -8,6 +8,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { provideHttpClient } from '@angular/common/http';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,6 +38,10 @@ export const appConfig: ApplicationConfig = {
       storageBucket: "clinicaonline-50bb7.appspot.com",
       messagingSenderId: "73778727254",
       appId: "1:73778727254:web:405c2f92e09d79a81d6ef7"
-    }))
+    })),
+    importProvidersFrom(NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })),
+    importProvidersFrom(BrowserAnimationsModule) // Añade BrowserAnimationsModule aquí
   ]
 };

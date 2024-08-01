@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Turno } from '../../clases/turno';
 import { Especialista } from '../../clases/especialista';
 import { Horario } from '../../clases/horario';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { BarranavComponent } from '../barranav/barranav.component';
 import { AdminNavbarComponent } from '../usuarios/admin-navbar/admin-navbar.component';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { EspecialistaNavbarComponent } from '../especialista-navbar/especialista-navbar.component';
+import { fadeScaleAnimation } from './../../animacion';
 
 @Component({
   selector: 'app-miperfil',
@@ -21,11 +20,13 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     CommonModule,
     FormsModule,
     BarranavComponent,
+    EspecialistaNavbarComponent,
     AdminNavbarComponent,
     RouterOutlet,
   ],
   templateUrl: './miperfil.component.html',
   styleUrl: './miperfil.component.css',
+  animations: [fadeScaleAnimation]
 })
 export default class MiPerfilComponent implements OnInit {
   identidad: string | null = '';
@@ -41,9 +42,7 @@ export default class MiPerfilComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
     private http: HttpClient,
-    private sanitizer: DomSanitizer
   ) {}
 
   async ngOnInit(): Promise<void> {

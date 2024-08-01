@@ -3,9 +3,7 @@ import {
   AbstractControl,
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -42,7 +40,14 @@ export class HistoriaclinicaComponent  {
         [Validators.required, Validators.min(34), Validators.max(42)],
       ],
       presion: ['', Validators.required],
-      datosDinamicos: this.fb.array([]),
+      datosDinamicos: this.fb.group({
+        nombreRango: ['', Validators.required],
+        rango: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
+        nombreNumerico: ['', Validators.required],
+        numerico: [null, Validators.required],
+        nombreSwitch: ['', Validators.required],
+        switch: [false, Validators.required],
+      }),
     });
   }
 
@@ -79,19 +84,16 @@ export class HistoriaclinicaComponent  {
     if (this.form.valid && this.turno) {
       this.historiaClinica = this.form.value;
 
-      const datosDinamicosObj: any = {};
-      for (const dato of (this.form.get('datosDinamicos') as FormArray)
-        .controls) {
-        const { clave, valor } = dato.value;
-        datosDinamicosObj[clave] = valor;
-      }
+      const datosDinamicosObj = {
+        rango: this.form.get('datosDinamicos.rango')?.value,
+        numerico: this.form.get('datosDinamicos.numerico')?.value,
+        switch: this.form.get('datosDinamicos.switch')?.value,
+      };
 
       this.historiaClinica.datosDinamicos = datosDinamicosObj;
 
       console.log(this.historiaClinica);
-      let id = await this.firestoreService.guardarHistoriaClinica(
-        this.historiaClinica
-      );
+      let id = await this.firestoreService.guardarHistoriaClinica(this.historiaClinica);
       if (id) {
         try {
           this.turno.historiaClinica = this.historiaClinica;
@@ -99,8 +101,8 @@ export class HistoriaclinicaComponent  {
           await this.firestoreService.modificarTurno(this.turno);
           Swal.fire({
             icon: 'success',
-            title: 'Historia clinica cargada',
-            text: 'Historia clinica..',
+            title: 'Historia clínica cargada',
+            text: 'Historia clínica guardada con éxito.',
             showConfirmButton: false,
             timer: 1500,
           });
@@ -108,7 +110,7 @@ export class HistoriaclinicaComponent  {
           Swal.fire({
             icon: 'error',
             title: 'Hubo un problema',
-            text: 'no se pudo enviar la historia clinica..',
+            text: 'No se pudo guardar la historia clínica.',
             showConfirmButton: false,
             timer: 1500,
           });

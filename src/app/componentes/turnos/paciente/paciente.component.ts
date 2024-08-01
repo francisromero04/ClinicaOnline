@@ -9,14 +9,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { BarranavComponent } from '../../barranav/barranav.component';
-//enc
+import { fadeScaleAnimation } from '../../../animacion';
 
 @Component({
   selector: 'app-paciente',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterOutlet, BarranavComponent],
   templateUrl: './paciente.component.html',
-  styleUrl: './paciente.component.css'
+  styleUrl: './paciente.component.css',
+  animations: [fadeScaleAnimation]
 })
 export default class PacienteComponent {
   turnos: any[] = [];

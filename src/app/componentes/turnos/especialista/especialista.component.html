@@ -1,4 +1,5 @@
-<app-barranav></app-barranav>
+<app-especialista-navbar @fadeScaleAnimation></app-especialista-navbar>
+
 <div class="container text-white mt-3 mb-3">
   <div class="mb-3">
     <label for="filtro" class="form-label">Buscar:</label>
@@ -54,7 +55,6 @@
               <div *ngFor="let dato of turno.historiaClinica.datosDinamicos | keyvalue">
                 <p><strong>{{ dato.key }}:</strong> {{ dato.value }}</p>
               </div>
-              <!-- <button type="button" (click)="test(turno)" class="btn btn-success">Probar turno.</button> -->
             </div>
           </div>
 

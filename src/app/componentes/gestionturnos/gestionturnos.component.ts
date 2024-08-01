@@ -16,13 +16,15 @@ import Swal from 'sweetalert2';
 import { ListaturnosdisponiblesComponent } from '../listaturnosdisponibles/listaturnosdisponibles.component';
 import { BarranavComponent } from '../barranav/barranav.component';
 import { AdminNavbarComponent } from '../usuarios/admin-navbar/admin-navbar.component';
+import { fadeScaleAnimation } from '../../animacion';
 
 @Component({
   selector: 'app-gestionturnos',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ListaturnosdisponiblesComponent, BarranavComponent, AdminNavbarComponent, RouterOutlet],
   templateUrl: './gestionturnos.component.html',
-  styleUrl: './gestionturnos.component.css'
+  styleUrl: './gestionturnos.component.css',
+  animations:[fadeScaleAnimation]
 })
 
 export default class GestionturnosComponent {
@@ -43,17 +45,15 @@ export default class GestionturnosComponent {
   paciente: string | undefined = undefined;
   especialistaFalso: boolean = false;
   cargando: boolean = false;
-  identidad: string | null = '';
+  cargado: boolean = false; // Nueva variable para controlar la carga
 
   constructor(
     private servicioAutenticacion: AuthService,
-    private enrutador: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.cargando = true;
-    this.identidad = localStorage.getItem('identidad');
     this.formulario = new FormGroup({
       especialidad: new FormControl('', [Validators.required]),
       especialista: new FormControl('', [Validators.required]),
@@ -61,9 +61,10 @@ export default class GestionturnosComponent {
       hora: new FormControl('', [Validators.required]),
       fecha: new FormControl('', [Validators.required]),
     });
-    await this.cargarEspecialidades();
+
     let id = localStorage.getItem('logueado');
     this.esAdmin = localStorage.getItem('admin') === 'true';
+
     if (id) {
       let admin = await this.servicioAutenticacion.getUserByUidAndType(id, 'admins');
       if (admin != null) {
@@ -72,7 +73,11 @@ export default class GestionturnosComponent {
         localStorage.setItem('admin', 'true');
       }
     }
+
+    await this.cargarEspecialidades();
+
     this.cargando = false;
+    this.cargado = true; // Se establece a true después de cargar todo
   }
 
   enCambioEspecialidad(uid: any) {

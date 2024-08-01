@@ -11,14 +11,16 @@ import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { AdminNavbarComponent } from '../../usuarios/admin-navbar/admin-navbar.component';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { CustomCaptchaDirective } from '../../../customCaptchaDirective';
+import { slideInFromTopAnimation, fadeScaleAnimation } from '../../../animacion';
 
 @Component({
   selector: 'app-registroadministrador',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AdminNavbarComponent, RouterOutlet, RecaptchaModule],
+  imports: [CommonModule, ReactiveFormsModule, AdminNavbarComponent, RouterOutlet, CustomCaptchaDirective],
   templateUrl: './registroadministrador.component.html',
   styleUrl: './registroadministrador.component.css',
+  animations: [slideInFromTopAnimation, fadeScaleAnimation]
 })
 export default class RegistroadministradorComponent {
   imagenSeleccionada: any = null;
@@ -27,19 +29,10 @@ export default class RegistroadministradorComponent {
   formulario: FormGroup;
   verificacionDeError: boolean = false;
   mensaje: string = '';
-  captcha: string = '';
-  captchaResuelto: boolean = false;  // Variable para controlar la visibilidad del mensaje
+  captchaResuelto: boolean = false; // Variable para controlar el captcha
+  captchaHabilitado: boolean = true; // Variable para habilitar o deshabilitar el captcha
 
-  constructor(private servicioDeAutenticacion: AuthService) {
-    this.captcha = '';
-  }
-
-  resolved(captchaResponse: string) {
-    this.captcha = captchaResponse;
-    this.captchaResuelto = true;  // Marcar que el captcha ha sido resuelto
-    // console.log('captcha resuelto con response: ' + this.captcha);
-  }
-
+  constructor(private servicioDeAutenticacion: AuthService) {}
   ngOnInit(): void {
     this.formulario = new FormGroup({
       nombreAdmin: new FormControl('', [Validators.required]),
@@ -88,16 +81,6 @@ export default class RegistroadministradorComponent {
   }
 
   onSubmit() {
-    if (this.captcha === '') {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor, complete el captcha',
-        timer: 2500,
-      });
-      return;
-    }
-
     if (this.formulario.valid) {
       this.cargarUsuario();
     } else {
@@ -156,5 +139,13 @@ export default class RegistroadministradorComponent {
         timer: 4000,
       });
     }
+  }
+
+  onCaptchaResolved(resolved: boolean) {
+    this.captchaResuelto = resolved;
+  }
+
+  toggleCaptcha() {
+    this.captchaHabilitado = !this.captchaHabilitado;
   }
 }

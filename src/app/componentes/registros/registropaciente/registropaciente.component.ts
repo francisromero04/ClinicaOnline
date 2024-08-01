@@ -1,20 +1,21 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Paciente } from '../../../clases/paciente';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { CustomCaptchaDirective } from '../../../customCaptchaDirective';
 
 @Component({
   selector: 'app-registropaciente',
   standalone: true,
   imports: [
-    RecaptchaModule,
     CommonModule,
     ReactiveFormsModule,
+    CustomCaptchaDirective,
+    RouterOutlet
   ],
   templateUrl: './registropaciente.component.html',
   styleUrl: './registropaciente.component.css',
@@ -30,18 +31,10 @@ export default class RegistropacienteComponent {
   Message: string = '';
   user: any;
   estaRegistrado: boolean = false;
-  captcha: string;
-  captchaResuelto: boolean = false;  // Variable para controlar la visibilidad del mensaje
+  captchaResuelto: boolean = false; // Variable para controlar el captcha
+  captchaHabilitado: boolean = true; // Variable para habilitar o deshabilitar el captcha
 
-  constructor(private autenticacion: AuthService, private router: Router) {
-    this.captcha = '';
-  }
-
-  resolved(captchaResponse: string) {
-    this.captcha = captchaResponse;
-    this.captchaResuelto = true;  // Marcar que el captcha ha sido resuelto
-    // console.log('captcha resuelto con response: ' + this.captcha);
-  }
+  constructor(private autenticacion: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.formulario = new FormGroup({
@@ -68,7 +61,6 @@ export default class RegistropacienteComponent {
       ]),
       fotoPaciente: new FormControl(''),
       fotoPaciente2: new FormControl(''),
-      // recaptchaReactive: new FormControl(null, Validators.required),
     });
   }
 
@@ -163,5 +155,13 @@ export default class RegistropacienteComponent {
         timer: 4000,
       });
     }
+  }
+
+  onCaptchaResolved(resolved: boolean) {
+    this.captchaResuelto = resolved;
+  }
+
+  toggleCaptcha() {
+    this.captchaHabilitado = !this.captchaHabilitado;
   }
 }

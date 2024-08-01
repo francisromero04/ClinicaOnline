@@ -6,6 +6,7 @@ import { AuthService } from './../../services/auth.service';
 import { SwalService } from '../../services/swal.service';
 import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { BarranavinicialComponent } from '../barranavinicial/barranavinicial.component';
+import { slideInFromBottomAnimation, fadeScaleAnimation } from '../../animacion';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +14,10 @@ import { BarranavinicialComponent } from '../barranavinicial/barranavinicial.com
   imports: [ReactiveFormsModule, CommonModule, RouterOutlet, BarranavinicialComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
+  animations: [slideInFromBottomAnimation, fadeScaleAnimation]
 })
 export default class LoginComponent implements OnInit {
   formulario: FormGroup;
-  estaLogueado: boolean = false;
   huboError: boolean = false;
   mensajeError: string = '';
   admins: any[] = [];

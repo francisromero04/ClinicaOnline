@@ -106,14 +106,27 @@
                 </div>
               </div>
 
-              <div class="text-center mb-4" [ngClass]="{'captcha-completed': captchaResuelto}">
-                <re-captcha (resolved)="resolved($event)" siteKey="6LcEEPwpAAAAAHT_Mn2BAhWmjCYMeqEZx77Q8xhs"></re-captcha>
+              <div class="text-center mb-4" *ngIf="captchaHabilitado">
+                <button appCustomCaptcha (captchaResolved)="onCaptchaResolved($event)">
+                  <img *ngIf="!captchaResuelto" src="assets/img/captchaPropio.png" alt="Cuadrado" style="width: 20px; height: 20px;">
+                  <img *ngIf="captchaResuelto" src="assets/img/captchaResuelto.png" alt="Checkmark" style="width: 20px; height: 20px;">
+                  {{ captchaResuelto ? 'Captcha resuelto' : 'Resolver Captcha' }}
+                </button>
               </div>
 
               <div class="text-center">
-                <button class="btn btn-outline-light btn-lg px-5" type="submit" [disabled]="!captcha">REGISTRARSE</button>
+                <button class="btn btn-outline-light btn-lg px-5" type="submit" [disabled]="captchaHabilitado && !captchaResuelto">
+                  REGISTRARSE
+                </button>
               </div>
+              <hr>
 
+              <div class="text-center">
+                <button class="btn-toggle-captcha" (click)="toggleCaptcha()"
+                        [ngClass]="{'enabled': captchaHabilitado, 'disabled': !captchaHabilitado}">
+                  {{ captchaHabilitado ? 'Deshabilitar Captcha' : 'Habilitar Captcha' }}
+                </button>
+              </div>
               <hr>
             </form>
           </div>

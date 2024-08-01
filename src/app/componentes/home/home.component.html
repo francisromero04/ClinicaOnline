@@ -1,2 +1,11 @@
-<app-barranav></app-barranav>
+<div>
+  <div *ngIf="esPaciente; else esEspecialista" [@fadeScaleAnimation]>
+    <app-barranav @fadeScaleAnimation></app-barranav>
+  </div>
+  <ng-template #esEspecialista>
+    <div *ngIf="!esPaciente" [@fadeScaleAnimation]>
+      <app-especialista-navbar></app-especialista-navbar>
+    </div>
+  </ng-template>
+</div>
 <router-outlet></router-outlet>

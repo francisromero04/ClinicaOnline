@@ -1,4 +1,4 @@
-<app-barranavinicial></app-barranavinicial>
+<app-barranavinicial @fadeScaleAnimation></app-barranavinicial>
 <div class="container mt-5">
   <div class="registro-buttons text-center">
     <button class="btn btn-gpt btn-lg rounded-pill" (click)="mostrarRegistro('paciente')" [class.active]="mostrarRegistroPacientes">
@@ -11,10 +11,10 @@
 </div>
 
 <div class="registro-form mt-3 text-center">
-  <div *ngIf="mostrarRegistroPacientes">
+  <div *ngIf="mostrarRegistroPacientes" @slideInAnimation>
     <app-registropaciente></app-registropaciente>
   </div>
-  <div *ngIf="mostrarRegistroEspecialistas">
+  <div *ngIf="mostrarRegistroEspecialistas" @slideInAnimation2>
     <app-registroespecialista></app-registroespecialista>
   </div>
 </div>

@@ -1,11 +1,13 @@
-<!--Navbar para admin-->
-<div *ngIf="identidad === 'admin'">
-  <app-admin-navbar></app-admin-navbar>
-</div>
+<div *ngIf="cargado">
+  <div *ngIf="esAdmin; else noEsAdmin">
+    <app-admin-navbar @fadeScaleAnimation></app-admin-navbar>
+  </div>
 
-<!--Navbar para paciente o especialista-->
-<div *ngIf="identidad === 'paciente'">
-  <app-barranav></app-barranav>
+  <ng-template #noEsAdmin>
+    <div *ngIf="!esAdmin">
+      <app-barranav @fadeScaleAnimation></app-barranav>
+    </div>
+  </ng-template>
 </div>
 
 <div class="container text-white mt-3 mb-3">

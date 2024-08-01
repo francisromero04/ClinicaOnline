@@ -1,3 +1,4 @@
+import { EspecialistaNavbarComponent } from './../../especialista-navbar/especialista-navbar.component';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../../../services/auth.service';
@@ -7,16 +8,17 @@ import { Turno } from '../../../clases/turno';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BarranavComponent } from '../../barranav/barranav.component';
 import { RouterOutlet } from '@angular/router';
 import { HistoriaclinicaComponent } from '../historiaclinica/historiaclinica.component';
+import { fadeScaleAnimation } from '../../../animacion';
 
 @Component({
   selector: 'app-especialista',
   standalone: true,
-  imports: [CommonModule, FormsModule, BarranavComponent, RouterOutlet, HistoriaclinicaComponent],
+  imports: [EspecialistaNavbarComponent, CommonModule, FormsModule, RouterOutlet, HistoriaclinicaComponent],
   templateUrl: './especialista.component.html',
-  styleUrl: './especialista.component.css'
+  styleUrl: './especialista.component.css',
+  animations: [fadeScaleAnimation]
 })
 
 export default class EspecialistaComponent{

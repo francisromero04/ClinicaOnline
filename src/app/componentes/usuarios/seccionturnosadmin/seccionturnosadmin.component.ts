@@ -9,13 +9,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { RouterOutlet } from '@angular/router';
+import { fadeScaleAnimation } from '../../../animacion';
 
 @Component({
   selector: 'app-seccionturnosadmin',
   standalone: true,
   imports: [CommonModule, FormsModule, AdminNavbarComponent, RouterOutlet],
   templateUrl: './seccionturnosadmin.component.html',
-  styleUrl: './seccionturnosadmin.component.css'
+  styleUrl: './seccionturnosadmin.component.css',
+  animations:[fadeScaleAnimation]
 })
 export default class SeccionturnosadminComponent {
   turnos: any[] = [];

@@ -9,10 +9,9 @@ import EspecialistaComponent from '../especialista/especialista.component';
   standalone: true,
   imports: [CommonModule, PacienteComponent, EspecialistaComponent],
   templateUrl: './misturnosgeneral.component.html',
-  styleUrl: './misturnosgeneral.component.css'
+  styleUrl: './misturnosgeneral.component.css',
 })
 export default class MisturnosgeneralComponent {
-  user: any;
   id: string = '';
   esPaciente: boolean = false;
 

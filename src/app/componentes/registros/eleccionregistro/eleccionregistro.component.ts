@@ -4,13 +4,15 @@ import RegistroespecialistaComponent from '../registroespecialista/registroespec
 import RegistropacienteComponent from '../registropaciente/registropaciente.component';
 import { RouterOutlet } from '@angular/router';
 import { BarranavinicialComponent } from '../../barranavinicial/barranavinicial.component';
+import { slideInAnimation, slideInAnimation2, fadeScaleAnimation } from '../../../animacion';
 
 @Component({
   selector: 'app-eleccionregistro',
   standalone: true,
-  imports: [CommonModule,RegistroespecialistaComponent, RegistropacienteComponent, RouterOutlet, BarranavinicialComponent],
+  imports: [CommonModule, RegistroespecialistaComponent, RegistropacienteComponent, RouterOutlet, BarranavinicialComponent],
   templateUrl: './eleccionregistro.component.html',
-  styleUrl: './eleccionregistro.component.css'
+  styleUrls: ['./eleccionregistro.component.css'],
+  animations: [slideInAnimation, slideInAnimation2, fadeScaleAnimation]
 })
 export default class EleccionregistroComponent {
   mostrarRegistroPacientes: boolean = false;

@@ -11,12 +11,12 @@ import { Especialidad } from '../../../clases/especialidad';
 import { Especialista } from '../../../clases/especialista';
 import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { CustomCaptchaDirective } from '../../../customCaptchaDirective';
 
 @Component({
   selector: 'app-registroespecialista',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RecaptchaModule],
+  imports: [CommonModule, ReactiveFormsModule, CustomCaptchaDirective],
   templateUrl: './registroespecialista.component.html',
   styleUrl: './registroespecialista.component.css',
 })
@@ -30,18 +30,10 @@ export default class RegistroespecialistaComponent {
   especialidadesSeleccionadas: Especialidad[] = [];
   nuevaEspecialidad: string = '';
   especialidades: Especialidad[] = [];
-  captcha: string = '';
-  captchaResuelto: boolean = false;  // Variable para controlar la visibilidad del mensaje
+  captchaResuelto: boolean = false; // Variable para controlar el captcha
+  captchaHabilitado: boolean = true; // Variable para habilitar o deshabilitar el captcha
 
-  constructor(private autenticacion: AuthService, private ruta: Router) {
-    this.captcha = '';
-  }
-
-  resolved(captchaResponse: string) {
-    this.captcha = captchaResponse;
-    this.captchaResuelto = true;  // Marcar que el captcha ha sido resuelto
-    // console.log('captcha resuelto con response: ' + this.captcha);
-  }
+  constructor(private autenticacion: AuthService, private ruta: Router) {}
 
   ngOnInit(): void {
     this.formulario = new FormGroup({
@@ -194,5 +186,13 @@ export default class RegistroespecialistaComponent {
         timer: 4000,
       });
     }
+  }
+
+  onCaptchaResolved(resolved: boolean) {
+    this.captchaResuelto = resolved;
+  }
+
+  toggleCaptcha() {
+    this.captchaHabilitado = !this.captchaHabilitado;
   }
 }

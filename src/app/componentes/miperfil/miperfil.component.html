@@ -1,12 +1,18 @@
-<!--Navbar para admin-->
-<div *ngIf="identidad === 'admin'">
-  <app-admin-navbar></app-admin-navbar>
+<div *ngIf="identidad === 'paciente'; else especialista">
+  <app-barranav @fadeScaleAnimation></app-barranav>
 </div>
 
-<!--Navbar para paciente o especialista-->
-<div *ngIf="identidad === 'paciente' || identidad === 'especialista'">
-  <app-barranav></app-barranav>
-</div>
+<ng-template #especialista>
+  <div *ngIf="identidad === 'especialista'; else adminTemplate">
+    <app-especialista-navbar @fadeScaleAnimation></app-especialista-navbar>
+  </div>
+</ng-template>
+
+<ng-template #adminTemplate>
+  <div *ngIf="identidad === 'admin'">
+    <app-admin-navbar @fadeScaleAnimation></app-admin-navbar>
+  </div>
+</ng-template>
 
 <div class="container text-white mt-3 mb-3">
   <div *ngIf="!usuario">
@@ -17,6 +23,7 @@
       <p>Cargando mi perfil...</p>
     </div>
   </div>
+
   <div *ngIf="usuario">
     <div *ngIf="identidad === 'admin'">
       <div class="row">
@@ -70,37 +77,10 @@
               <button class="btn btn-secondary" (click)="verhistorias()">
                 Descargar historias clínicas
               </button>
-              <!-- <button
-                class="btn btn-secondary mt-3"
-                (click)="verhistoriasFiltrada()"
-              >
-                Descargar historias clínicas por Especialista
-              </button> -->
             </div>
           </div>
         </div>
       </div>
-      <!-- <div *ngIf="filtrar" class="col-sm-10">
-        <div class="row">
-          <div *ngFor="let especialista of especialistasT" class="col-sm-3 m-1">
-            <button
-              class="btn btn-secondary text-white"
-              type="button"
-              id="{{ especialista.uid }}"
-              (click)="filtrarEspecialistas(especialista.uid)"
-            >
-              <p>{{ especialista.nombre }}</p>
-              <img
-                [src]="especialista.foto1"
-                width="100"
-                height="100"
-                alt="Imagen de {{ especialista.nombre }}"
-                class="img-fluid especialidad-img mb-2"
-                />
-            </button>
-          </div>
-        </div>
-      </div> -->
     </div>
 
     <div *ngIf="identidad === 'especialista'" class="row">

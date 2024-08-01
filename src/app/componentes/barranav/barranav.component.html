@@ -25,9 +25,8 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <ng-container *ngIf="esPaciente">
             <li class="nav-item">
-              <a class="nav-link active" routerLink="/turnos/opciones">Mis turnos</a>
+              <a class="nav-link active" routerLink="/turnos/opciones">Turnos solicitados</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" routerLink="/solicitarturno">Solicitar turno</a>
@@ -35,18 +34,6 @@
             <li class="nav-item">
               <a class="nav-link active" routerLink="/miperfil">Mi perfil</a>
             </li>
-          </ng-container>
-          <ng-container *ngIf="!esPaciente">
-            <li class="nav-item">
-              <a class="nav-link active" routerLink="/turnos/opciones">Mis turnos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" routerLink="/miperfil">Mi perfil</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" routerLink="/usuariospacientes">Pacientes</a>
-            </li>
-          </ng-container>
         </ul>
 
         <ng-container *ngIf="loggedUser | async as user">

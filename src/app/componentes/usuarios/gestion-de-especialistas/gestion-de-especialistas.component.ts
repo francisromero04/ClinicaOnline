@@ -4,13 +4,15 @@ import { Especialista } from '../../../clases/especialista';
 import { AuthService } from '../../../services/auth.service';
 import { RouterOutlet } from '@angular/router';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
+import { fadeScaleAnimation } from '../../../animacion';
 
 @Component({
   selector: 'app-gestion-de-especialistas',
   standalone: true,
   imports: [CommonModule, RouterOutlet, AdminNavbarComponent],
   templateUrl: './gestion-de-especialistas.component.html',
-  styleUrl: './gestion-de-especialistas.component.css'
+  styleUrl: './gestion-de-especialistas.component.css',
+  animations: [fadeScaleAnimation]
 })
 export default class GestionDeEspecialistasComponent {
   especialistas: Especialista[] = [];

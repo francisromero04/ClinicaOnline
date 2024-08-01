@@ -1,7 +1,31 @@
-.captcha-completed .grecaptcha-badge {
-  display: none;
+/* Estilo base para el botón de habilitar/deshabilitar captcha */
+.btn-toggle-captcha {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.captcha-completed .rc-anchor {
-  border: 2px solid #0f0;
+/* Estilo cuando el captcha está habilitado */
+.btn-toggle-captcha.enabled {
+  background-color: #dc3545; /* Verde para habilitado */
+}
+
+/* Estilo cuando el captcha está deshabilitado */
+.btn-toggle-captcha.disabled {
+  background-color: #0dc243; /* Rojo para deshabilitado */
+}
+
+/* Efecto de hover */
+.btn-toggle-captcha:hover {
+  transform: scale(1.05);
+}
+
+/* Efecto de foco */
+.btn-toggle-captcha:focus {
+  outline: none;
 }

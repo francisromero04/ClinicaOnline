@@ -5,16 +5,18 @@ import { AuthService } from '../../services/auth.service';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import { CommonModule } from '@angular/common';
-import { BarranavComponent } from '../barranav/barranav.component';
 import { AdminNavbarComponent } from '../usuarios/admin-navbar/admin-navbar.component';
 import { RouterOutlet } from '@angular/router';
+import { EspecialistaNavbarComponent } from '../especialista-navbar/especialista-navbar.component';
+import { fadeScaleAnimation, rotateAnimation } from '../../animacion';
 
 @Component({
   selector: 'app-usuarios-pacientes',
   standalone: true,
-  imports: [CommonModule, BarranavComponent, AdminNavbarComponent, RouterOutlet],
+  imports: [CommonModule, EspecialistaNavbarComponent, AdminNavbarComponent, RouterOutlet],
   templateUrl: './usuarios-pacientes.component.html',
-  styleUrl: './usuarios-pacientes.component.css'
+  styleUrl: './usuarios-pacientes.component.css',
+  animations: [fadeScaleAnimation, rotateAnimation],
 })
 export default class UsuariosPacientesComponent {
   identidad: string | null = '';
@@ -29,12 +31,17 @@ export default class UsuariosPacientesComponent {
   constructor(private authService: AuthService) {}
 
   async ngOnInit(): Promise<void> {
+    if (this.loading) {
+      // Evitar múltiples llamadas a ngOnInit
+      return;
+    }
+
     this.loading = true;
     await this.user();
     this.identidad = localStorage.getItem('identidad');
     await this.obtenerHistorias();
     console.log(this.historiasClinicas);
-    this.loading=false;
+    this.loading = false;
   }
 
   mostrarHistoria(turno: Turno) {
@@ -84,12 +91,15 @@ export default class UsuariosPacientesComponent {
       `${Turnos[0].Paciente}_historias_clinicas.xlsx`
     );
   }
+
   historiasClinicasUnicas: Turno[] = [];
+
   async obtenerHistorias() {
     let historiasClinicasA: Turno[] = [];
     let pacientes = await this.authService.getAllPacientes();
     let especialidades = await this.authService.obtenerEspecialidades();
     let especialistas = await this.authService.obtenerEspecialistas();
+
     switch (this.identidad) {
       case 'paciente':
         historiasClinicasA = await this.authService.obtenerTurnosDelUsuario(
@@ -122,13 +132,6 @@ export default class UsuariosPacientesComponent {
       } else {
         historia.Paciente = 'Desconocido';
       }
-      if (
-        !this.historiasClinicasUnicas.some(
-          (h) => h.Paciente === historia.Paciente
-        )
-      ) {
-        this.historiasClinicasUnicas.push(historia);
-      }
 
       historia.Especialista =
         especialistas.find((e) => e.uid === historia.idEspecialista)?.nombre ||
@@ -137,12 +140,20 @@ export default class UsuariosPacientesComponent {
         especialidades.find((e) => e.id === historia.idEspecialidad)?.nombre ||
         'Desconocido';
     }
+
     this.historiasClinicas = historiasClinicasA.filter(
       (historia) => historia.historiaClinica !== null
     );
 
+    // Evitar duplicados en historiasClinicasUnicas
+    this.historiasClinicasUnicas = Array.from(new Set(this.historiasClinicas.map(a => a.Paciente)))
+      .map(Paciente => {
+        return this.historiasClinicas.find(a => a.Paciente === Paciente);
+      });
+
     console.log(this.historiasClinicas);
   }
+
   mostrarHistoriasClinicasDePaciente(idPaciente: string) {
 
     console.log(idPaciente);

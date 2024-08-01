@@ -1,0 +1,46 @@
+<app-admin-navbar @fadeScaleAnimation></app-admin-navbar>
+
+<div class="container mt-3">
+  <div class="row" *ngIf="!loading">
+    <div class="col-lg-12 mb-4" *ngFor="let chart of charts">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="card-title">{{ chart.Titulo }}</h2>
+          <div
+            echarts
+            [options]="chart.chartOption"
+            [id]="chart.id"
+            class="demo-chart"
+          ></div>
+          <input
+            *ngIf="chart.hasDateFilter && chart.createChart"
+            type="date"
+            [(ngModel)]="fechaInicio"
+            (change)="createChart()"
+            class="form-control"
+          />
+          <input
+            *ngIf="chart.hasDateFilter && chart.createChart"
+            type="date"
+            [(ngModel)]="fechaFin"
+            (change)="createChart()"
+            class="mt-3 form-control"
+          />
+          <button
+            *ngIf="exportPDF"
+            class="btn btn-primary mt-3"
+            (click)="exportPDF(chart.id, chart.Titulo)"
+          >
+            Descargar como PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="loading" class="text-center text-white">
+    <div class="spinner-grow text-secondary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p>Cargando gráficos...</p>
+  </div>
+</div>

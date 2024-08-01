@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './barranavinicial.component.html',
-  styleUrl: './barranavinicial.component.css'
+  styleUrl: './barranavinicial.component.css',
 })
 export class BarranavinicialComponent {
 
